@@ -10,7 +10,7 @@ import { LoginDTO, RegistrationDTO } from './auth.DTO'
 import { hash, compare } from 'bcrypt'
 import { USER_ROLE } from './auth.constant'
 import { Pengguna, RolePengguna } from '@prisma/client'
-import { FinalizeUser } from './auth.interface'
+import { FinalizedUser } from './auth.interface'
 
 @Injectable()
 export class AuthService {
@@ -77,11 +77,11 @@ export class AuthService {
     })
 
     const accessToken = await this.generateAccessToken(user.id)
-    const finalizeUser = this.getFinalizeUser(user)
+    const finalizedUser = this.getFinalizeUser(user)
 
     return {
       accessToken: accessToken,
-      user: finalizeUser,
+      user: finalizedUser,
     }
   }
 
@@ -102,11 +102,11 @@ export class AuthService {
     }
 
     const accessToken = await this.generateAccessToken(user.id)
-    const finalizeUser = this.getFinalizeUser(user)
+    const finalizedUser = this.getFinalizeUser(user)
 
     return {
       accessToken: accessToken,
-      user: finalizeUser,
+      user: finalizedUser,
     }
   }
 
@@ -123,11 +123,11 @@ export class AuthService {
   }
 
   private getFinalizeUser(user: Pengguna) {
-    const finalizeUser: FinalizeUser = {
+    const finalizedUser: FinalizedUser = {
       email: user.email,
       nama: user.nama,
     }
 
-    return finalizeUser
+    return finalizedUser
   }
 }
