@@ -1,4 +1,4 @@
 export interface FinalizeUser {
-    email: string
-    nama: string
+  email: string
+  nama: string
 }
