@@ -53,11 +53,6 @@ export class AuthService {
       throw new ConflictException('User already exists')
     }
 
-    const hashedPassword = await hash(
-      password,
-      parseInt(process.env.APP_SALT_ROUNDS)
-    )
-
     let userRole: RolePengguna
     if (role === 'ADMIN') {
       userRole = 'ADMIN'
@@ -67,22 +62,59 @@ export class AuthService {
       userRole = 'TRAVELER'
     }
 
-    const user = await this.prisma.pengguna.create({
-      data: {
-        email: email,
-        password: hashedPassword,
-        nama: nama,
-        role: userRole,
-      },
-    })
+    if (userRole === 'AGEN') {
+      const agentRegistration = await this.prisma.pendaftaranAgen.findUnique({
+        where: {
+          email: email
+        }
+      })
 
-    const accessToken = await this.generateAccessToken(user.id)
-    const finalizedUser = this.getFinalizeUser(user)
+      if (agentRegistration) {
+        if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
+          throw new ConflictException('Agent registration is being processed')
+        }
 
-    return {
-      accessToken: accessToken,
-      user: finalizedUser,
+        await this.prisma.pendaftaranAgen.delete({
+          where: {
+            email: email
+          }
+        })
+      }
     }
+
+    const hashedPassword = await hash(
+      password,
+      parseInt(process.env.APP_SALT_ROUNDS)
+    )
+
+    if (userRole === 'AGEN') {
+      await this.prisma.pendaftaranAgen.create({
+        data: {
+          email: email,
+          nama: nama,
+          password: hashedPassword,
+          statusPendaftaran: 'DIAJUKAN'
+        },
+      })
+    } else {
+      const user = await this.prisma.pengguna.create({
+        data: {
+          email: email,
+          password: hashedPassword,
+          nama: nama,
+          role: userRole,
+        },
+      })
+
+      const accessToken = await this.generateAccessToken(user.id)
+      const finalizedUser = this.getFinalizeUser(user)
+  
+      return {
+        accessToken: accessToken,
+        user: finalizedUser,
+      }
+    }
+
   }
 
   async login({ email, password }: LoginDTO) {
