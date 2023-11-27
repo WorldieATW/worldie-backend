@@ -65,8 +65,8 @@ export class AuthService {
     if (userRole === 'AGEN') {
       const agentRegistration = await this.prisma.pendaftaranAgen.findUnique({
         where: {
-          email: email
-        }
+          email: email,
+        },
       })
 
       if (agentRegistration) {
@@ -76,8 +76,8 @@ export class AuthService {
 
         await this.prisma.pendaftaranAgen.delete({
           where: {
-            email: email
-          }
+            email: email,
+          },
         })
       }
     }
@@ -93,7 +93,7 @@ export class AuthService {
           email: email,
           nama: nama,
           password: hashedPassword,
-          statusPendaftaran: 'DIAJUKAN'
+          statusPendaftaran: 'DIAJUKAN',
         },
       })
     } else {
@@ -108,13 +108,12 @@ export class AuthService {
 
       const accessToken = await this.generateAccessToken(user.id)
       const finalizedUser = this.getFinalizeUser(user)
-  
+
       return {
         accessToken: accessToken,
         user: finalizedUser,
       }
     }
-
   }
 
   async login({ email, password }: LoginDTO) {
