@@ -1,7 +1,7 @@
 import { SetMetadata } from '@nestjs/common'
 
-export const Traveler = () => SetMetadata('isTravelerOnly', true)
+export const IsTraveler = () => SetMetadata('isTravelerOnly', true)
 
-export const Agen = () => SetMetadata('isAgenOnly', true)
+export const IsAgen = () => SetMetadata('isAgenOnly', true)
 
-export const Admin = () => SetMetadata('isAdminOnly', true)
+export const IsAdmin = () => SetMetadata('isAdminOnly', true)
