@@ -9,6 +9,8 @@ import { JwtService } from '@nestjs/jwt'
 import { Reflector } from '@nestjs/core'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { AuthenticatedRequestInterface } from './auth.interface'
+import { Pengguna } from '@prisma/client'
+import { ROLE_PERMISSION } from './auth.constant'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -23,7 +25,7 @@ export class AuthGuard implements CanActivate {
 
     Logger.log(req.body, `Req ${req.method} ${req.url} from ${req.ips}`)
 
-    if (this.getPublicStatus(ctx)) return true
+    if (this.getMetadataStatus(ctx, 'isPublic')) return true
 
     const rawToken = this.extractTokenFromHeader(req)
     if (rawToken) {
@@ -40,7 +42,7 @@ export class AuthGuard implements CanActivate {
 
         if (user) {
           req.user = user
-          return true
+          return this.getPermissionStatus(ctx, user)
         } else {
           throw new UnauthorizedException('Invalid Token')
         }
@@ -56,8 +58,8 @@ export class AuthGuard implements CanActivate {
     return false
   }
 
-  private getPublicStatus(ctx: ExecutionContext) {
-    return this.reflector.getAllAndOverride<boolean>('isPublic', [
+  private getMetadataStatus(ctx: ExecutionContext, metadata: string) {
+    return this.reflector.getAllAndOverride<boolean>(metadata, [
       ctx.getHandler(),
       ctx.getClass(),
     ])
@@ -66,5 +68,17 @@ export class AuthGuard implements CanActivate {
   private extractTokenFromHeader(req: AuthenticatedRequestInterface) {
     const [type, token] = req.headers.authorization?.split(' ') ?? []
     return type === 'Bearer' ? token : undefined
+  }
+
+  private getPermissionStatus(ctx: ExecutionContext, user: Pengguna) {
+    const { role } = user
+
+    for (var index in ROLE_PERMISSION) {
+      if (this.getMetadataStatus(ctx, ROLE_PERMISSION[index].metada)) {
+        if (role !== ROLE_PERMISSION[index].role) return false
+      }
+    }
+
+    return true
   }
 }
