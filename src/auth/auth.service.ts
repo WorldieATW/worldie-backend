@@ -96,8 +96,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid Email or Password')
     }
 
-    const isPasswordValid = await compare(password, user.password)
-    if (!isPasswordValid) {
+    const isValidPassword = await compare(password, user.password)
+    if (!isValidPassword) {
       throw new UnauthorizedException('Invalid Email or Password')
     }
 
