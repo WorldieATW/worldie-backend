@@ -73,7 +73,7 @@ export class AuthGuard implements CanActivate {
   private getPermissionStatus(ctx: ExecutionContext, user: Pengguna) {
     const { role } = user
 
-    for (var index in ROLE_PERMISSION) {
+    for (const index in ROLE_PERMISSION) {
       if (this.getMetadataStatus(ctx, ROLE_PERMISSION[index].metada)) {
         if (role !== ROLE_PERMISSION[index].role) return false
       }
