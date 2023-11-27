@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pengguna {
+  id String @default(uuid()) @id
+  email String @unique
+  password String
+  nama String
+  role RolePengguna
+
+  // Agen
+  statusPendaftaran StatusPendaftaran?
+  daftarAset AsetUsaha[]
+
+  //Traveler
+  daftarWorldPost WorldPost[]
+  daftarReview Review[]
+
+  @@index([id])
+}
+
+enum RolePengguna {
+  ADMIN
+  AGEN
+  TRAVELER
+}
+
+enum StatusPendaftaran {
+  DIAJUKAN
+  DITERIMA
+  DITOLAK
+}
+
+model WorldPost {
+  id String @default(uuid()) @id
+  konten String
+  travelerId String
+  timestamp DateTime @db.Timestamptz() @default(now())
+  traveler Pengguna @relation(fields: [travelerId], references: [id])
+  parentPostId String? @unique
+  parentPost WorldPost? @relation("Comment", fields: [parentPostId], references: [id])
+  childrenPost WorldPost[] @relation("Comment")
+
+  @@index([id])
+}
+
+model Review {
+  id String @default(uuid()) @id
+  judul String
+  konten String
+  rating Int
+  travelerId String
+  traveler Pengguna @relation(fields: [travelerId], references: [id])
+  destinasiWisataId String
+  destinasiWisata AsetUsaha @relation(fields: [destinasiWisataId], references: [id])
+
+  @@index([id])
+}
+
+model Alamat {
+  id String @default(uuid()) @id
+  jalan String
+  kota String
+  provinsi String
+  negara String
+  asetUsaha AsetUsaha[]
+}
+
+model AsetUsaha {
+  id String @default(uuid()) @id
+  nama String
+  deskripsi String
+  harga Int
+  agenId String
+  agen Pengguna @relation(fields: [agenId], references: [id])
+  tipe TipeAsetUsaha
+
+  // Transportasi
+  jenisKendaraan JenisKendaraan?
+
+  // Destinasi Wisata
+  daftarReview Review[]
+
+  // Penginapan
+  jenisPenginapan JenisPenginapan?
+  rating Int?
+
+  // Destinasi Wisata & Penginapan
+  alamatId String?
+  alamat Alamat? @relation(fields: [alamatId], references: [id])
+
+  @@index([id])
+}
+
+enum TipeAsetUsaha {
+  DESTINASI_WISATA
+  PENGINAPAN
+  TRANSPORTASI
+}
+
+enum JenisKendaraan {
+  PESAWAT
+  KERETA
+  BUS
+  MINIBUS
+  MOBIL
+  MOTOR
+}
+
+enum JenisPenginapan {
+  HOTEL
+  VILLA
+  KOST
+  KONTRAKAN
+}
+
+model PendaftaranAgen {
+  id String @default(uuid()) @id
+  email String @unique
+  nama String
+  password String
+  timestamp DateTime @db.Timestamptz() @default(now())
+  statusPendaftaran StatusPendaftaran
+}
