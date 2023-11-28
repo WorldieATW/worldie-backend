@@ -10,15 +10,13 @@ import { hash, compare } from 'bcrypt'
 import { USER_ROLE } from './auth.constant'
 import { Pengguna, RolePengguna } from '@prisma/client'
 import { FinalizedUserInterface } from './auth.interface'
-import { PenggunaRepository } from 'src/repository/pengguna.repository'
-import { PendaftaranAgenRepository } from 'src/repository/pendaftaranAgen.repository'
+import { RepositoryService } from 'src/repository/repository.service'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly penggunaRepository: PenggunaRepository,
-    private readonly pendaftaranAgenRepository: PendaftaranAgenRepository
+    private readonly repository: RepositoryService
   ) {}
 
   async registration({
@@ -45,12 +43,12 @@ export class AuthService {
       throw new BadRequestException('Invalid email address')
     }
 
-    const isUserExists = await this.penggunaRepository.findByEmail(email)
+    const isUserExists = await this.repository.pengguna.findByEmail(email)
     if (isUserExists) {
       throw new ConflictException('User already exists')
     }
 
-    const agentRegistration = await this.pendaftaranAgenRepository.findByEmail(
+    const agentRegistration = await this.repository.pendaftaranAgen.findByEmail(
       email
     )
     if (agentRegistration) {
@@ -69,7 +67,7 @@ export class AuthService {
     }
 
     if (userRole === 'AGEN') {
-      await this.pendaftaranAgenRepository.deleteByEmail(email)
+      await this.repository.pendaftaranAgen.deleteByEmail(email)
     }
 
     const hashedPassword = await hash(
@@ -78,13 +76,13 @@ export class AuthService {
     )
 
     if (userRole === 'AGEN') {
-      await this.pendaftaranAgenRepository.create({
+      await this.repository.pendaftaranAgen.create({
         email: email,
         password: hashedPassword,
         nama: nama,
       })
     } else {
-      const user = await this.penggunaRepository.create({
+      const user = await this.repository.pengguna.create({
         email: email,
         password: hashedPassword,
         nama: nama,
@@ -102,7 +100,7 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDTO) {
-    const user = await this.penggunaRepository.findByEmail(email)
+    const user = await this.repository.pengguna.findByEmail(email)
 
     if (!user) {
       throw new UnauthorizedException('Invalid Email or Password')
