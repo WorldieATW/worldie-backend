@@ -51,7 +51,7 @@ export class AuthService {
     const agentRegistration = await this.repository.pendaftaranAgen.findByEmail(
       email
     )
-    
+
     if (agentRegistration) {
       if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
         throw new ConflictException('Agent registration is being processed')
