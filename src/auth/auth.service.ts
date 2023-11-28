@@ -5,18 +5,18 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { PrismaService } from 'src/prisma/prisma.service'
 import { LoginDTO, RegistrationDTO } from './auth.DTO'
 import { hash, compare } from 'bcrypt'
 import { USER_ROLE } from './auth.constant'
 import { Pengguna, RolePengguna } from '@prisma/client'
-import { FinalizedUser } from './auth.interface'
+import { FinalizedUserInterface } from './auth.interface'
+import { RepositoryService } from 'src/repository/repository.service'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService
+    private readonly repository: RepositoryService
   ) {}
 
   async registration({
@@ -43,14 +43,18 @@ export class AuthService {
       throw new BadRequestException('Invalid email address')
     }
 
-    const isUserExists = await this.prisma.pengguna.findUnique({
-      where: {
-        email: email,
-      },
-    })
-
+    const isUserExists = await this.repository.pengguna.findByEmail(email)
     if (isUserExists) {
       throw new ConflictException('User already exists')
+    }
+
+    const agentRegistration = await this.repository.pendaftaranAgen.findByEmail(
+      email
+    )
+    if (agentRegistration) {
+      if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
+        throw new ConflictException('Agent registration is being processed')
+      }
     }
 
     let userRole: RolePengguna
@@ -63,23 +67,7 @@ export class AuthService {
     }
 
     if (userRole === 'AGEN') {
-      const agentRegistration = await this.prisma.pendaftaranAgen.findUnique({
-        where: {
-          email: email,
-        },
-      })
-
-      if (agentRegistration) {
-        if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
-          throw new ConflictException('Agent registration is being processed')
-        }
-
-        await this.prisma.pendaftaranAgen.delete({
-          where: {
-            email: email,
-          },
-        })
-      }
+      await this.repository.pendaftaranAgen.deleteByEmail(email)
     }
 
     const hashedPassword = await hash(
@@ -88,26 +76,21 @@ export class AuthService {
     )
 
     if (userRole === 'AGEN') {
-      await this.prisma.pendaftaranAgen.create({
-        data: {
-          email: email,
-          nama: nama,
-          password: hashedPassword,
-          statusPendaftaran: 'DIAJUKAN',
-        },
+      await this.repository.pendaftaranAgen.create({
+        email: email,
+        password: hashedPassword,
+        nama: nama,
       })
     } else {
-      const user = await this.prisma.pengguna.create({
-        data: {
-          email: email,
-          password: hashedPassword,
-          nama: nama,
-          role: userRole,
-        },
+      const user = await this.repository.pengguna.create({
+        email: email,
+        password: hashedPassword,
+        nama: nama,
+        role: userRole,
       })
 
       const accessToken = await this.generateAccessToken(user.id)
-      const finalizedUser = this.getFinalizeUser(user)
+      const finalizedUser = this.getFinalizedUser(user)
 
       return {
         accessToken: accessToken,
@@ -117,11 +100,7 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDTO) {
-    const user = await this.prisma.pengguna.findUnique({
-      where: {
-        email: email,
-      },
-    })
+    const user = await this.repository.pengguna.findByEmail(email)
 
     if (!user) {
       throw new UnauthorizedException('Invalid Email or Password')
@@ -133,7 +112,7 @@ export class AuthService {
     }
 
     const accessToken = await this.generateAccessToken(user.id)
-    const finalizedUser = this.getFinalizeUser(user)
+    const finalizedUser = this.getFinalizedUser(user)
 
     return {
       accessToken: accessToken,
@@ -153,8 +132,8 @@ export class AuthService {
     return accessToken
   }
 
-  private getFinalizeUser(user: Pengguna) {
-    const finalizedUser: FinalizedUser = {
+  private getFinalizedUser(user: Pengguna) {
+    const finalizedUser: FinalizedUserInterface = {
       email: user.email,
       nama: user.nama,
     }
