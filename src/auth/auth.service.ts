@@ -48,7 +48,10 @@ export class AuthService {
       throw new ConflictException('User already exists')
     }
 
-    const agentRegistration = await this.repository.pendaftaranAgen.findByEmail(email)
+    const agentRegistration = await this.repository.pendaftaranAgen.findByEmail(
+      email
+    )
+    
     if (agentRegistration) {
       if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
         throw new ConflictException('Agent registration is being processed')
