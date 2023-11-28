@@ -8,9 +8,9 @@ import { CommonModule } from './common/common.module'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthGuard } from './auth/auth.guard'
 import { JwtModule } from '@nestjs/jwt'
-import { TravelerModule } from './traveler/traveler.module';
-import { WorldPostManagerModule } from './world-post-manager/world-post-manager.module';
-import { RepositoryModule } from './repository/repository.module';
+import { TravelerModule } from './traveler/traveler.module'
+import { WorldPostManagerModule } from './world-post-manager/world-post-manager.module'
+import { RepositoryModule } from './repository/repository.module'
 
 @Module({
   imports: [

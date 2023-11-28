@@ -5,7 +5,7 @@ export interface AuthenticatedRequestInterface extends Request {
   user: Pengguna
 }
 
-export interface FinalizedUser {
+export interface FinalizedUserInterface {
   email: string
   nama: string
 }

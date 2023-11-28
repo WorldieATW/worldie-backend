@@ -10,7 +10,7 @@ import { LoginDTO, RegistrationDTO } from './auth.DTO'
 import { hash, compare } from 'bcrypt'
 import { USER_ROLE } from './auth.constant'
 import { Pengguna, RolePengguna } from '@prisma/client'
-import { FinalizedUser } from './auth.interface'
+import { FinalizedUserInterface } from './auth.interface'
 import { PenggunaRepository } from 'src/repository/pengguna.repository'
 import { PendaftaranAgenRepository } from 'src/repository/pendaftaranAgen.repository'
 
@@ -51,7 +51,9 @@ export class AuthService {
       throw new ConflictException('User already exists')
     }
 
-    const agentRegistration = await this.pendaftaranAgenRepository.findByEmail(email)
+    const agentRegistration = await this.pendaftaranAgenRepository.findByEmail(
+      email
+    )
     if (agentRegistration) {
       if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
         throw new ConflictException('Agent registration is being processed')
@@ -80,18 +82,18 @@ export class AuthService {
       await this.pendaftaranAgenRepository.create({
         email: email,
         password: hashedPassword,
-        nama: nama
+        nama: nama,
       })
     } else {
-      const user = await this.penggunaRepository.create({ 
+      const user = await this.penggunaRepository.create({
         email: email,
         password: hashedPassword,
         nama: nama,
-        role: userRole
+        role: userRole,
       })
 
       const accessToken = await this.generateAccessToken(user.id)
-      const finalizedUser = this.getFinalizeUser(user)
+      const finalizedUser = this.getFinalizedUser(user)
 
       return {
         accessToken: accessToken,
@@ -113,7 +115,7 @@ export class AuthService {
     }
 
     const accessToken = await this.generateAccessToken(user.id)
-    const finalizedUser = this.getFinalizeUser(user)
+    const finalizedUser = this.getFinalizedUser(user)
 
     return {
       accessToken: accessToken,
@@ -133,8 +135,8 @@ export class AuthService {
     return accessToken
   }
 
-  private getFinalizeUser(user: Pengguna) {
-    const finalizedUser: FinalizedUser = {
+  private getFinalizedUser(user: Pengguna) {
+    const finalizedUser: FinalizedUserInterface = {
       email: user.email,
       nama: user.nama,
     }

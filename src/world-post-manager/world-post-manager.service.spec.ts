@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { WorldPostManagerService } from './world-post-manager.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { WorldPostManagerService } from './world-post-manager.service'
 
 describe('WorldPostManagerService', () => {
-  let service: WorldPostManagerService;
+  let service: WorldPostManagerService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [WorldPostManagerService],
-    }).compile();
+    }).compile()
 
-    service = module.get<WorldPostManagerService>(WorldPostManagerService);
-  });
+    service = module.get<WorldPostManagerService>(WorldPostManagerService)
+  })
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-});
+    expect(service).toBeDefined()
+  })
+})
