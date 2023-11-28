@@ -24,7 +24,7 @@
     "prepare": "husky install",
     "migrate:dev": "yarn prisma migrate dev --schema=./prisma/schema.prisma && yarn prisma generate --schema=./prisma/schema.prisma",
     "migrate": "yarn prisma migrate deploy --schema=./prisma/schema.prisma && yarn prisma generate --schema=./prisma/schema.prisma",
-    "prisma-studio": "yarn prisma studio --schema=./prisma/schema.prisma"
+    "studio": "yarn prisma studio --schema=./prisma/schema.prisma"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
