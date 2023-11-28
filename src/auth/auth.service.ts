@@ -11,12 +11,15 @@ import { hash, compare } from 'bcrypt'
 import { USER_ROLE } from './auth.constant'
 import { Pengguna, RolePengguna } from '@prisma/client'
 import { FinalizedUser } from './auth.interface'
+import { PenggunaRepository } from 'src/repository/pengguna.repository'
+import { PendaftaranAgenRepository } from 'src/repository/pendaftaranAgen.repository'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService
+    private readonly penggunaRepository: PenggunaRepository,
+    private readonly pendaftaranAgenRepository: PendaftaranAgenRepository
   ) {}
 
   async registration({
@@ -43,14 +46,16 @@ export class AuthService {
       throw new BadRequestException('Invalid email address')
     }
 
-    const isUserExists = await this.prisma.pengguna.findUnique({
-      where: {
-        email: email,
-      },
-    })
-
+    const isUserExists = await this.penggunaRepository.findByEmail(email)
     if (isUserExists) {
       throw new ConflictException('User already exists')
+    }
+
+    const agentRegistration = await this.pendaftaranAgenRepository.findByEmail(email)
+    if (agentRegistration) {
+      if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
+        throw new ConflictException('Agent registration is being processed')
+      }
     }
 
     let userRole: RolePengguna
@@ -63,23 +68,7 @@ export class AuthService {
     }
 
     if (userRole === 'AGEN') {
-      const agentRegistration = await this.prisma.pendaftaranAgen.findUnique({
-        where: {
-          email: email,
-        },
-      })
-
-      if (agentRegistration) {
-        if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
-          throw new ConflictException('Agent registration is being processed')
-        }
-
-        await this.prisma.pendaftaranAgen.delete({
-          where: {
-            email: email,
-          },
-        })
-      }
+      await this.pendaftaranAgenRepository.deleteByEmail(email)
     }
 
     const hashedPassword = await hash(
@@ -88,22 +77,17 @@ export class AuthService {
     )
 
     if (userRole === 'AGEN') {
-      await this.prisma.pendaftaranAgen.create({
-        data: {
-          email: email,
-          nama: nama,
-          password: hashedPassword,
-          statusPendaftaran: 'DIAJUKAN',
-        },
+      await this.pendaftaranAgenRepository.create({
+        email: email,
+        password: hashedPassword,
+        nama: nama
       })
     } else {
-      const user = await this.prisma.pengguna.create({
-        data: {
-          email: email,
-          password: hashedPassword,
-          nama: nama,
-          role: userRole,
-        },
+      const user = await this.penggunaRepository.create({ 
+        email: email,
+        password: hashedPassword,
+        nama: nama,
+        role: userRole
       })
 
       const accessToken = await this.generateAccessToken(user.id)
@@ -117,11 +101,7 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDTO) {
-    const user = await this.prisma.pengguna.findUnique({
-      where: {
-        email: email,
-      },
-    })
+    const user = await this.penggunaRepository.findByEmail(email)
 
     if (!user) {
       throw new UnauthorizedException('Invalid Email or Password')

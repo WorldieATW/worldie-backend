@@ -7,17 +7,17 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Reflector } from '@nestjs/core'
-import { PrismaService } from 'src/prisma/prisma.service'
 import { AuthenticatedRequestInterface } from './auth.interface'
 import { Pengguna } from '@prisma/client'
 import { ROLE_PERMISSION } from './auth.constant'
+import { PenggunaRepository } from 'src/repository/pengguna.repository'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly reflector: Reflector,
-    private readonly prisma: PrismaService
+    private readonly penggunaRepository: PenggunaRepository
   ) {}
 
   async canActivate(ctx: ExecutionContext) {
@@ -34,12 +34,7 @@ export class AuthGuard implements CanActivate {
           secret: process.env.APP_ACCESS_SECRET,
         })
 
-        const user = await this.prisma.pengguna.findUnique({
-          where: {
-            id: userId,
-          },
-        })
-
+        const user = await this.penggunaRepository.findById(userId)
         if (user) {
           req.user = user
           return this.getPermissionStatus(ctx, user)
