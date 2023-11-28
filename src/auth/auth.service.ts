@@ -51,11 +51,6 @@ export class AuthService {
     const agentRegistration = await this.repository.pendaftaranAgen.findByEmail(
       email
     )
-    if (agentRegistration) {
-      if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
-        throw new ConflictException('Agent registration is being processed')
-      }
-    }
 
     let userRole: RolePengguna
     if (role === 'ADMIN') {
@@ -67,7 +62,13 @@ export class AuthService {
     }
 
     if (userRole === 'AGEN') {
-      await this.repository.pendaftaranAgen.deleteByEmail(email)
+      if (agentRegistration) {
+        if (agentRegistration.statusPendaftaran === 'DIAJUKAN') {
+          throw new ConflictException('Agent registration is being processed')
+        } else if (agentRegistration.statusPendaftaran === 'DITOLAK') {
+          await this.repository.pendaftaranAgen.deleteByEmail(email)
+        }
+      }
     }
 
     const hashedPassword = await hash(

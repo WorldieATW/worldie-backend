@@ -36,4 +36,56 @@ export class PendaftaranAgenRepository {
       },
     })
   }
+
+  async findAll() {
+    const agentRegistration = await this.prisma.pendaftaranAgen.findMany({
+      select: {
+        id: true,
+        email: true,
+        nama: true,
+        timestamp: true,
+        statusPendaftaran: true,
+      },
+    })
+
+    return agentRegistration
+  }
+
+  async sdasd() {
+    return await this.prisma.asetUsaha.findMany({
+      where: {
+        AND: [
+          {
+            agen: {
+              email: 'email si agen',
+            },
+          },
+          {
+            tipe: 'TRANSPORTASI',
+          },
+        ],
+      },
+    })
+  }
+
+  async jose() {
+    return await this.prisma.worldPost.findMany({
+      where: {
+        traveler: {
+          email: 'bonaventuragal@gmail.com',
+        },
+        parentPost: null,
+      },
+      include: {
+        childrenPost: {
+          select: {
+            id: true,
+            konten: true,
+            travelerId: true,
+            timestamp: true,
+          },
+        },
+      },
+    })
+  }
 }
