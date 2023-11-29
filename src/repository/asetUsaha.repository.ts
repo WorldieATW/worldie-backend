@@ -4,40 +4,45 @@ import { PrismaService } from 'src/prisma/prisma.service'
 
 @Injectable()
 export class AsetUsahaRepository {
-    constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-    async findAll(email: string, tipe: TipeAsetUsaha, jenisKendaraan: JenisKendaraan, jenisPenginapan: JenisPenginapan) {
-        const allAsetUsahaAgen = await this.prisma.asetUsaha.findMany({
-            where: {
-                agen: {
-                    email: {
-                        contains: email
-                    }
-                },
-                tipe: tipe,
-                jenisKendaraan: jenisKendaraan,
-                jenisPenginapan: jenisPenginapan
-            }
-        })
+  async findAll(
+    email: string,
+    tipe: TipeAsetUsaha,
+    jenisKendaraan: JenisKendaraan,
+    jenisPenginapan: JenisPenginapan
+  ) {
+    const allAsetUsahaAgen = await this.prisma.asetUsaha.findMany({
+      where: {
+        agen: {
+          email: {
+            contains: email,
+          },
+        },
+        tipe: tipe,
+        jenisKendaraan: jenisKendaraan,
+        jenisPenginapan: jenisPenginapan,
+      },
+    })
 
-        return allAsetUsahaAgen
-    }
+    return allAsetUsahaAgen
+  }
 
-    async findById(id: string) {
-        const asetUsaha = await this.prisma.asetUsaha.findUnique({
-            where: {
-                id: id
-            }
-        })
+  async findById(id: string) {
+    const asetUsaha = await this.prisma.asetUsaha.findUnique({
+      where: {
+        id: id,
+      },
+    })
 
-        return asetUsaha
-    }
+    return asetUsaha
+  }
 
-    async delete(id: string) {
-        await this.prisma.asetUsaha.delete({
-            where: {
-                id: id
-            }
-        })
-    }
+  async delete(id: string) {
+    await this.prisma.asetUsaha.delete({
+      where: {
+        id: id,
+      },
+    })
+  }
 }

@@ -8,7 +8,12 @@ import { AsetUsahaRepository } from './asetUsaha.repository'
 @Global()
 @Module({
   imports: [PrismaModule],
-  providers: [RepositoryService, PenggunaRepository, PendaftaranAgenRepository, AsetUsahaRepository],
+  providers: [
+    RepositoryService,
+    PenggunaRepository,
+    PendaftaranAgenRepository,
+    AsetUsahaRepository,
+  ],
   exports: [RepositoryService],
 })
 export class RepositoryModule {}
