@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common'
+import {
+  Injectable,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
 import { CreateWorldPostDTO } from './traveler.DTO'
 import { Pengguna } from '@prisma/client'
