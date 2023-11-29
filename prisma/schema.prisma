@@ -39,13 +39,14 @@ enum StatusPendaftaran {
 
 model WorldPost {
   id String @default(uuid()) @id
-  konten String
+  konten String?
+  attachmentUrl String?
   travelerId String
-  timestamp DateTime @db.Timestamptz() @default(now())
   traveler Pengguna @relation(fields: [travelerId], references: [id])
   parentPostId String? @unique
   parentPost WorldPost? @relation("Comment", fields: [parentPostId], references: [id])
   childrenPost WorldPost[] @relation("Comment")
+  timestamp DateTime @db.Timestamptz() @default(now())
 
   @@index([id])
 }
