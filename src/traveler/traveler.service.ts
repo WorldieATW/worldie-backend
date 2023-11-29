@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common'
+import {
+  Injectable,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
 import { CreateWorldPostDTO } from './traveler.DTO'
 import { Pengguna } from '@prisma/client'
@@ -26,6 +30,12 @@ export class TravelerService {
     const worldPost = await this.repository.worldPost.findById(idWorldPost)
     if (!worldPost) {
       throw new BadRequestException('World Post not found')
+    }
+
+    const { travelerId } = worldPost
+    const { id } = user
+    if (travelerId !== id) {
+      throw new UnauthorizedException('Invalid World Post')
     }
 
     await this.repository.worldPost.deleteById(idWorldPost)
