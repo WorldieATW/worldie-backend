@@ -1,52 +1,57 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { CreateWorldPostInterface } from "./repository.interface";
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { CreateWorldPostInterface } from './repository.interface'
 
 @Injectable()
 export class WorldPostRepository {
-    constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-    async create({ konten, attachmentUrl, travelerId, parentPostId }: CreateWorldPostInterface) {
-        const worldPost = await this.prisma.worldPost.create({
-            data: {
-                konten: konten,
-                attachmentUrl: attachmentUrl,
-                travelerId: travelerId,
-                ...(parentPostId? {parentPostId: parentPostId} : {})
-            }
-        })
+  async create({
+    konten,
+    attachmentUrl,
+    travelerId,
+    parentPostId,
+  }: CreateWorldPostInterface) {
+    const worldPost = await this.prisma.worldPost.create({
+      data: {
+        konten: konten,
+        attachmentUrl: attachmentUrl,
+        travelerId: travelerId,
+        ...(parentPostId ? { parentPostId: parentPostId } : {}),
+      },
+    })
 
-        return worldPost
-    }
+    return worldPost
+  }
 
-    async findAllWorldPost() {
-        const worldPosts = await this.prisma.worldPost.findMany({
-            where: {
-                parentPostId: null
-            }
-        })
+  async findAllWorldPost() {
+    const worldPosts = await this.prisma.worldPost.findMany({
+      where: {
+        parentPostId: null,
+      },
+    })
 
-        return worldPosts
-    }
+    return worldPosts
+  }
 
-    async findById(id: string) {
-        const worldPost = await this.prisma.worldPost.findUnique({
-            where: {
-                id: id
-            },
-            include: {
-                childrenPost: true
-            }
-        })
+  async findById(id: string) {
+    const worldPost = await this.prisma.worldPost.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        childrenPost: true,
+      },
+    })
 
-        return worldPost
-    }
+    return worldPost
+  }
 
-    async deleteById(id: string) {
-        await this.prisma.worldPost.delete({
-            where: {
-                id: id
-            }
-        })
-    }
+  async deleteById(id: string) {
+    await this.prisma.worldPost.delete({
+      where: {
+        id: id,
+      },
+    })
+  }
 }

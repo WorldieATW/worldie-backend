@@ -8,7 +8,12 @@ import { WorldPostRepository } from './world-post.repository'
 @Global()
 @Module({
   imports: [PrismaModule],
-  providers: [RepositoryService, PenggunaRepository, PendaftaranAgenRepository, WorldPostRepository],
+  providers: [
+    RepositoryService,
+    PenggunaRepository,
+    PendaftaranAgenRepository,
+    WorldPostRepository,
+  ],
   exports: [RepositoryService],
 })
 export class RepositoryModule {}

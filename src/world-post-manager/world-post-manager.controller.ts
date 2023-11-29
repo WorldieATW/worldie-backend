@@ -14,7 +14,8 @@ export class WorldPostManagerController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async mendapatkanSemuaWorldPost() {
-    const responseData = await this.worldPostManagerService.mendapatkanSemuaWorldPost()
+    const responseData =
+      await this.worldPostManagerService.mendapatkanSemuaWorldPost()
 
     return this.responseUtil.response({}, responseData)
   }
@@ -23,8 +24,9 @@ export class WorldPostManagerController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async melihatDetailWorldPost(@Param('id') id: string) {
-    const responseData = await this.worldPostManagerService.melihatDetailWorldPost(id)
-    
+    const responseData =
+      await this.worldPostManagerService.melihatDetailWorldPost(id)
+
     return this.responseUtil.response({}, responseData)
   }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Delete, Param } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Delete,
+  Param,
+} from '@nestjs/common'
 import { TravelerService } from './traveler.service'
 import { ResponseUtil } from 'src/common/utils/response.util'
 import { IsTraveler } from 'src/common/decorators/setRolePermission.decorator'
@@ -16,14 +24,17 @@ export class TravelerController {
   @IsTraveler()
   @Post('world-post')
   @HttpCode(HttpStatus.CREATED)
-  async buatWorldPost(@GetCurrentUser() user: Pengguna, @Body() body: CreateWorldPostDTO) {
+  async buatWorldPost(
+    @GetCurrentUser() user: Pengguna,
+    @Body() body: CreateWorldPostDTO
+  ) {
     const responseData = await this.travelerService.buatWorldPost(user, body)
 
     return this.responseUtil.response(
       {
         responseCode: HttpStatus.CREATED,
-        responseMessage: "World Post successfully created"
-      }, 
+        responseMessage: 'World Post successfully created',
+      },
       responseData
     )
   }
@@ -31,9 +42,14 @@ export class TravelerController {
   @IsTraveler()
   @Delete('world-post/:idWorldPost')
   @HttpCode(HttpStatus.OK)
-  async hapusWorldPost(@GetCurrentUser() user: Pengguna, @Param('idWorldPost') idWorldPost: string) {
+  async hapusWorldPost(
+    @GetCurrentUser() user: Pengguna,
+    @Param('idWorldPost') idWorldPost: string
+  ) {
     await this.travelerService.hapusWorldPost(user, idWorldPost)
-    
-    return this.responseUtil.response({responseMessage: 'World Post successfully deleted'})
+
+    return this.responseUtil.response({
+      responseMessage: 'World Post successfully deleted',
+    })
   }
 }

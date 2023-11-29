@@ -1,12 +1,12 @@
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateWorldPostDTO {
-    @IsString()
-    konten: string
+  @IsString()
+  konten: string
 
-    @IsString()
-    attachmentUrl: string
+  @IsString()
+  attachmentUrl: string
 
-    @IsString()
-    parentPostId: string
+  @IsString()
+  parentPostId: string
 }
