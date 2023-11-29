@@ -52,4 +52,37 @@ export class TravelerController {
       responseMessage: 'World Post successfully deleted',
     })
   }
+
+  @IsTraveler()
+  @Post('world-post/:parentPostId')
+  @HttpCode(HttpStatus.CREATED)
+  async buatKomentar(
+    @GetCurrentUser() user: Pengguna,
+    @Param('parentPostId') parentPostId: string,
+    @Body() body: CreateWorldPostDTO
+  ) {
+    const responseData = await this.travelerService.buatKomentar(user, parentPostId, body)
+
+    return this.responseUtil.response(
+      {
+        responseCode: HttpStatus.CREATED,
+        responseMessage: 'Comment successfully created',
+      },
+      responseData
+    )
+  }
+
+  @IsTraveler()
+  @Delete('world-post/:idWorldPost')
+  @HttpCode(HttpStatus.OK)
+  async hapusKomentar(
+    @GetCurrentUser() user: Pengguna,
+    @Param('idWorldPost') idWorldPost: string
+  ) {
+    await this.travelerService.hapusKomentar(user, idWorldPost)
+
+    return this.responseUtil.response({
+      responseMessage: 'Comment successfully deleted',
+    })
+  }
 }
