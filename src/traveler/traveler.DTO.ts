@@ -10,3 +10,11 @@ export class CreateWorldPostDTO {
   @IsString()
   parentPostId: string
 }
+
+export class CreateCommentWorldPostDTO {
+  @IsString()
+  konten: string
+
+  @IsString()
+  attachmentUrl: string
+}

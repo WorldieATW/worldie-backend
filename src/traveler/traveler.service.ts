@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
-import { CreateWorldPostDTO } from './traveler.DTO'
+import { CreateWorldPostDTO, CreateCommentWorldPostDTO } from './traveler.DTO'
 import { Pengguna } from '@prisma/client'
 
 @Injectable()
@@ -44,7 +44,7 @@ export class TravelerService {
   async buatKomentar(
     user: Pengguna, 
     postId: string,
-    { konten, attachmentUrl, parentPostId=postId }: CreateWorldPostDTO
+    { konten, attachmentUrl }: CreateCommentWorldPostDTO
   ) {
     const parentPost = await this.repository.worldPost.findById(postId)
     if (!parentPost) {
@@ -56,7 +56,7 @@ export class TravelerService {
       konten: konten,
       attachmentUrl: attachmentUrl,
       travelerId: id,
-      parentPostId: parentPostId,
+      parentPostId: postId,
     })
 
     return { worldPost: worldPost }
@@ -64,12 +64,19 @@ export class TravelerService {
 
   async hapusKomentar(user: Pengguna, idKomentar: string) {
     const comment = await this.repository.worldPost.findById(idKomentar)
-    const { parentPostId } = comment
     if (!comment) {
       throw new BadRequestException('Comment not found')
     }
-    else if (!parentPostId) {
-      throw new BadRequestException('Parent Post not found')
+
+    const { parentPostId } = comment
+    if (!parentPostId) {
+      throw new BadRequestException('Parent Post not found or this is not a comment')
+    }
+
+    const { travelerId } = comment
+    const { id } = user
+    if (travelerId !== id) {
+      throw new UnauthorizedException('Unauthorized')
     }
 
     await this.repository.worldPost.deleteById(idKomentar)

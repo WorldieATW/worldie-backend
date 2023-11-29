@@ -10,7 +10,7 @@ import {
 import { TravelerService } from './traveler.service'
 import { ResponseUtil } from 'src/common/utils/response.util'
 import { IsTraveler } from 'src/common/decorators/setRolePermission.decorator'
-import { CreateWorldPostDTO } from './traveler.DTO'
+import { CreateWorldPostDTO, CreateCommentWorldPostDTO } from './traveler.DTO'
 import { GetCurrentUser } from 'src/common/decorators/getCurrentUser.decorator'
 import { Pengguna } from '@prisma/client'
 
@@ -59,7 +59,7 @@ export class TravelerController {
   async buatKomentar(
     @GetCurrentUser() user: Pengguna,
     @Param('parentPostId') parentPostId: string,
-    @Body() body: CreateWorldPostDTO
+    @Body() body: CreateCommentWorldPostDTO
   ) {
     const responseData = await this.travelerService.buatKomentar(user, parentPostId, body)
 
@@ -73,13 +73,13 @@ export class TravelerController {
   }
 
   @IsTraveler()
-  @Delete('world-post/:idWorldPost')
+  @Delete('world-post/delete-comment/:idKomentar')
   @HttpCode(HttpStatus.OK)
   async hapusKomentar(
     @GetCurrentUser() user: Pengguna,
-    @Param('idWorldPost') idWorldPost: string
+    @Param('idKomentar') idKomentar: string
   ) {
-    await this.travelerService.hapusKomentar(user, idWorldPost)
+    await this.travelerService.hapusKomentar(user, idKomentar)
 
     return this.responseUtil.response({
       responseMessage: 'Comment successfully deleted',
