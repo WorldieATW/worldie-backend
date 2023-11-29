@@ -1,5 +1,12 @@
 import { JenisKendaraan, JenisPenginapan, TipeAsetUsaha } from '@prisma/client'
-import { IsEmail, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import {
+  IsEmail,
+  IsIn,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator'
 
 export class GetAllAsetUsahaQueryParamDTO {
   @IsEmail()
@@ -20,81 +27,81 @@ export class GetAllAsetUsahaQueryParamDTO {
 }
 
 export class DestinasiWisataDTO {
-    @IsNotEmpty()
-    @IsString()
-    nama: string
+  @IsNotEmpty()
+  @IsString()
+  nama: string
 
-    @IsNotEmpty()
-    @IsString()
-    deskripsi: string
+  @IsNotEmpty()
+  @IsString()
+  deskripsi: string
 
-    @IsNotEmpty()
-    @IsNumber()
-    harga: number
+  @IsNotEmpty()
+  @IsNumber()
+  harga: number
 
-    @IsNotEmpty()
-    @IsString()
-    jalan: string
+  @IsNotEmpty()
+  @IsString()
+  jalan: string
 
-    @IsString()
-    @IsNotEmpty()
-    kota: string
+  @IsString()
+  @IsNotEmpty()
+  kota: string
 
-    @IsString()
-    @IsNotEmpty()
-    provinsi: string
+  @IsString()
+  @IsNotEmpty()
+  provinsi: string
 
-    @IsString()
-    @IsNotEmpty()
-    negara: string
+  @IsString()
+  @IsNotEmpty()
+  negara: string
 }
 
 export class KendaraanDTO {
-    @IsNotEmpty()
-    @IsString()
-    nama: string
+  @IsNotEmpty()
+  @IsString()
+  nama: string
 
-    @IsNotEmpty()
-    @IsString()
-    deskripsi: string
+  @IsNotEmpty()
+  @IsString()
+  deskripsi: string
 
-    @IsNotEmpty()
-    @IsNumber()
-    harga: number
+  @IsNotEmpty()
+  @IsNumber()
+  harga: number
 
-    @IsNotEmpty()
-    jenisKendaraan: JenisKendaraan
+  @IsNotEmpty()
+  jenisKendaraan: JenisKendaraan
 }
 
 export class PenginapanDTO {
-    @IsNotEmpty()
-    @IsString()
-    nama: string
+  @IsNotEmpty()
+  @IsString()
+  nama: string
 
-    @IsNotEmpty()
-    @IsString()
-    deskripsi: string
+  @IsNotEmpty()
+  @IsString()
+  deskripsi: string
 
-    @IsNotEmpty()
-    @IsNumber()
-    harga: number
-    
-    @IsNotEmpty()
-    jenisPenginapan: JenisPenginapan
+  @IsNotEmpty()
+  @IsNumber()
+  harga: number
 
-    @IsNotEmpty()
-    @IsString()
-    jalan: string
+  @IsNotEmpty()
+  jenisPenginapan: JenisPenginapan
 
-    @IsString()
-    @IsNotEmpty()
-    kota: string
+  @IsNotEmpty()
+  @IsString()
+  jalan: string
 
-    @IsString()
-    @IsNotEmpty()
-    provinsi: string
+  @IsString()
+  @IsNotEmpty()
+  kota: string
 
-    @IsString()
-    @IsNotEmpty()
-    negara: string
+  @IsString()
+  @IsNotEmpty()
+  provinsi: string
+
+  @IsString()
+  @IsNotEmpty()
+  negara: string
 }

@@ -1,6 +1,15 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
-import { DestinasiWisataDTO, GetAllAsetUsahaQueryParamDTO, KendaraanDTO, PenginapanDTO } from './aset-usaha.DTO'
+import {
+  DestinasiWisataDTO,
+  GetAllAsetUsahaQueryParamDTO,
+  KendaraanDTO,
+  PenginapanDTO,
+} from './aset-usaha.DTO'
 import { Pengguna } from '@prisma/client'
 
 @Injectable()
@@ -43,33 +52,40 @@ export class AsetUsahaService {
 
   async createDestinasiWisata(body: DestinasiWisataDTO, user: Pengguna) {
     if (user.role !== 'AGEN') {
-        throw new ForbiddenException('You dont have permission')
+      throw new ForbiddenException('You dont have permission')
     }
 
     const idAgen = user.id
-    const destinasiWisata = await this.repository.asetUsaha.createDestinasiWisata(body, idAgen)
+    const destinasiWisata =
+      await this.repository.asetUsaha.createDestinasiWisata(body, idAgen)
 
     return destinasiWisata
   }
 
   async createKendaraan(body: KendaraanDTO, user: Pengguna) {
     if (user.role !== 'AGEN') {
-        throw new ForbiddenException('You dont have permission')
+      throw new ForbiddenException('You dont have permission')
     }
 
     const idAgen = user.id
-    const kendaraan = await this.repository.asetUsaha.createKendaraan(body, idAgen)
+    const kendaraan = await this.repository.asetUsaha.createKendaraan(
+      body,
+      idAgen
+    )
 
     return kendaraan
   }
 
   async createPenginapan(body: PenginapanDTO, user: Pengguna) {
     if (user.role !== 'AGEN') {
-        throw new ForbiddenException('You dont have permission')
+      throw new ForbiddenException('You dont have permission')
     }
 
     const idAgen = user.id
-    const penginapan = await this.repository.asetUsaha.createPenginapan(body, idAgen)
+    const penginapan = await this.repository.asetUsaha.createPenginapan(
+      body,
+      idAgen
+    )
 
     return penginapan
   }
