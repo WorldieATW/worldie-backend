@@ -42,7 +42,7 @@ export class TravelerService {
   }
 
   async buatKomentar(
-    user: Pengguna, 
+    user: Pengguna,
     postId: string,
     { konten, attachmentUrl }: CreateCommentWorldPostDTO
   ) {
@@ -70,7 +70,9 @@ export class TravelerService {
 
     const { parentPostId } = comment
     if (!parentPostId) {
-      throw new BadRequestException('Parent Post not found or this is not a comment')
+      throw new BadRequestException(
+        'Parent Post not found or this is not a comment'
+      )
     }
 
     const { travelerId } = comment

@@ -61,7 +61,11 @@ export class TravelerController {
     @Param('parentPostId') parentPostId: string,
     @Body() body: CreateCommentWorldPostDTO
   ) {
-    const responseData = await this.travelerService.buatKomentar(user, parentPostId, body)
+    const responseData = await this.travelerService.buatKomentar(
+      user,
+      parentPostId,
+      body
+    )
 
     return this.responseUtil.response(
       {
