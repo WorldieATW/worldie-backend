@@ -1,5 +1,5 @@
 import { JenisKendaraan, JenisPenginapan, TipeAsetUsaha } from '@prisma/client'
-import { IsEmail, IsIn, IsOptional } from 'class-validator'
+import { IsEmail, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
 
 export class GetAllAsetUsahaQueryParamDTO {
   @IsEmail()
@@ -17,4 +17,84 @@ export class GetAllAsetUsahaQueryParamDTO {
   @IsOptional()
   @IsIn(['HOTEL', 'VILLA', 'KOST', 'KONTRAKAN'])
   jenisPenginapan: JenisPenginapan
+}
+
+export class DestinasiWisataDTO {
+    @IsNotEmpty()
+    @IsString()
+    nama: string
+
+    @IsNotEmpty()
+    @IsString()
+    deskripsi: string
+
+    @IsNotEmpty()
+    @IsNumber()
+    harga: number
+
+    @IsNotEmpty()
+    @IsString()
+    jalan: string
+
+    @IsString()
+    @IsNotEmpty()
+    kota: string
+
+    @IsString()
+    @IsNotEmpty()
+    provinsi: string
+
+    @IsString()
+    @IsNotEmpty()
+    negara: string
+}
+
+export class KendaraanDTO {
+    @IsNotEmpty()
+    @IsString()
+    nama: string
+
+    @IsNotEmpty()
+    @IsString()
+    deskripsi: string
+
+    @IsNotEmpty()
+    @IsNumber()
+    harga: number
+
+    @IsNotEmpty()
+    jenisKendaraan: JenisKendaraan
+}
+
+export class PenginapanDTO {
+    @IsNotEmpty()
+    @IsString()
+    nama: string
+
+    @IsNotEmpty()
+    @IsString()
+    deskripsi: string
+
+    @IsNotEmpty()
+    @IsNumber()
+    harga: number
+    
+    @IsNotEmpty()
+    jenisPenginapan: JenisPenginapan
+
+    @IsNotEmpty()
+    @IsString()
+    jalan: string
+
+    @IsString()
+    @IsNotEmpty()
+    kota: string
+
+    @IsString()
+    @IsNotEmpty()
+    provinsi: string
+
+    @IsString()
+    @IsNotEmpty()
+    negara: string
 }

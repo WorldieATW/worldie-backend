@@ -1,16 +1,21 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
+  Post,
   Query,
 } from '@nestjs/common'
 import { AsetUsahaService } from './aset-usaha.service'
 import { ResponseUtil } from 'src/common/utils/response.util'
 import { IsPublic } from 'src/common/decorators/isPublic.decorator'
-import { GetAllAsetUsahaQueryParamDTO } from './aset-usaha.DTO'
+import { DestinasiWisataDTO, GetAllAsetUsahaQueryParamDTO, KendaraanDTO, PenginapanDTO } from './aset-usaha.DTO'
 import { IsAgen } from 'src/common/decorators/setRolePermission.decorator'
+import { GetCurrentUser } from 'src/common/decorators/getCurrentUser.decorator'
+import { Pengguna } from '@prisma/client'
 
 @Controller('aset-usaha')
 export class AsetUsahaController {
@@ -58,5 +63,44 @@ export class AsetUsahaController {
       responseCode: HttpStatus.OK,
       responseMessage: 'Successfully deleted Aset Usaha',
     })
+  }
+
+  @IsAgen()
+  @HttpCode(HttpStatus.CREATED)
+  @Post('create/tourist-attraction')
+  async createDestinasiWisata(@Body() destinasiWisata: DestinasiWisataDTO, @GetCurrentUser() user: Pengguna) {
+    const responseData = await this.asetUsahaService.createDestinasiWisata(destinasiWisata, user)
+
+    return this.responseUtil.response({
+      responseCode: HttpStatus.CREATED,
+      responseMessage: 'Successfully created new Tourist Attraction',
+    },
+    responseData)
+  }
+
+  @IsAgen()
+  @HttpCode(HttpStatus.CREATED)
+  @Post('create/transportation')
+  async createKendaraan(@Body() kendaraan: KendaraanDTO, @GetCurrentUser() user: Pengguna) {
+    const responseData = await this.asetUsahaService.createKendaraan(kendaraan, user)
+
+    return this.responseUtil.response({
+      responseCode: HttpStatus.CREATED,
+      responseMessage: 'Successfully created new Transportation',
+    },
+    responseData)
+  }
+
+  @IsAgen()
+  @HttpCode(HttpStatus.CREATED)
+  @Post('create/accomodation')
+  async createPenginapan(@Body() penginapan: PenginapanDTO, @GetCurrentUser() user: Pengguna) {
+    const responseData = await this.asetUsahaService.createPenginapan(penginapan, user)
+
+    return this.responseUtil.response({
+      responseCode: HttpStatus.CREATED,
+      responseMessage: 'Successfully created new Accomodation',
+    },
+    responseData)
   }
 }
