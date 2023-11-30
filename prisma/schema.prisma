@@ -43,7 +43,7 @@ model WorldPost {
   attachmentUrl String?
   travelerId String
   traveler Pengguna @relation(fields: [travelerId], references: [id])
-  parentPostId String? @unique
+  parentPostId String?
   parentPost WorldPost? @relation("Comment", fields: [parentPostId], references: [id])
   childrenPost WorldPost[] @relation("Comment")
   timestamp DateTime @db.Timestamptz() @default(now())
