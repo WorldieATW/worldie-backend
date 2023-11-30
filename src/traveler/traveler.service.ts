@@ -17,7 +17,7 @@ export class TravelerService {
   ) {
     if (!konten && !attachmentUrl) {
       throw new BadRequestException(
-        'Content and Attachment Url cannot not be empty'
+        'Content and Attachment Url cannot be empty'
       )
     }
 
