@@ -1,7 +1,8 @@
 import {
   Injectable,
   BadRequestException,
-  UnauthorizedException,
+  NotFoundException,
+  ForbiddenException
 } from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
 import { CreateWorldPostDTO } from './traveler.DTO'
@@ -35,13 +36,13 @@ export class TravelerService {
   async hapusWorldPost(user: Pengguna, idWorldPost: string) {
     const worldPost = await this.repository.worldPost.findById(idWorldPost)
     if (!worldPost) {
-      throw new BadRequestException('World Post not found')
+      throw new NotFoundException('World Post not found')
     }
 
     const { travelerId } = worldPost
     const { id } = user
     if (travelerId !== id) {
-      throw new UnauthorizedException('Invalid World Post')
+      throw new ForbiddenException('Invalid World Post')
     }
 
     await this.repository.worldPost.deleteById(idWorldPost)
