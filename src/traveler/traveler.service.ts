@@ -16,7 +16,9 @@ export class TravelerService {
     { konten, attachmentUrl, parentPostId }: CreateWorldPostDTO
   ) {
     if (!konten && !attachmentUrl) {
-      throw new BadRequestException('Content and Attachment Url cannot not be empty')
+      throw new BadRequestException(
+        'Content and Attachment Url cannot not be empty'
+      )
     }
 
     const { id } = user
