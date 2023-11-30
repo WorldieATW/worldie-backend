@@ -5,10 +5,14 @@ import {
 } from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
 import { GetPendaftaranAgenQueryParamDTO } from './pendaftaran-agen.DTO'
+import { MailService } from 'src/mail/mail.service'
 
 @Injectable()
 export class PendaftaranAgenService {
-  constructor(private readonly repository: RepositoryService) {}
+  constructor(
+    private readonly repository: RepositoryService,
+    private readonly mail: MailService
+  ) {}
 
   async getAllPendaftaranAgen({
     email,
@@ -26,7 +30,7 @@ export class PendaftaranAgenService {
 
   async getPendaftaranAgenById(id: string) {
     const pendaftaranAgen = await this.getPendaftaranFromRepo(id)
-    const { password, ...res } = pendaftaranAgen
+    const { password: _, ...res } = pendaftaranAgen
 
     return { pendaftaranAgen: res }
   }
@@ -53,16 +57,21 @@ export class PendaftaranAgenService {
       nama,
       role: 'AGEN',
     })
+
+    this.mail.sendMail(email, nama, 'accept')
   }
 
   async rejectPendaftaranAgen(id: string) {
-    const pendaftaranAgen = await this.getPendaftaranFromRepo(id)
+    const { email, nama, statusPendaftaran } =
+      await this.getPendaftaranFromRepo(id)
 
-    if (pendaftaranAgen.statusPendaftaran !== 'DIAJUKAN') {
+    if (statusPendaftaran !== 'DIAJUKAN') {
       throw new ForbiddenException('PendaftaranAgen has already been processed')
     }
 
     await this.repository.pendaftaranAgen.updateStatus(id, 'DITOLAK')
+
+    this.mail.sendMail(email, nama, 'reject')
   }
 
   private async getPendaftaranFromRepo(id: string) {
