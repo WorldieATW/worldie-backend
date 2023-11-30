@@ -51,6 +51,10 @@ export class TravelerService {
       throw new BadRequestException('Parent Post not found')
     }
 
+    if (konten.trim().length === 0 && attachmentUrl.trim().length === 0) {
+      throw new BadRequestException('Content must not be empty')
+    }
+
     const { id } = user
     const worldPost = await this.repository.worldPost.create({
       konten: konten,
