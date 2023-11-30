@@ -81,6 +81,7 @@ model AsetUsaha {
   agenId String
   agen Pengguna @relation(fields: [agenId], references: [id])
   tipe TipeAsetUsaha
+  imgUrl String @default("")
 
   // Transportasi
   jenisKendaraan JenisKendaraan?

@@ -12,6 +12,7 @@ import { TravelerModule } from './traveler/traveler.module'
 import { WorldPostManagerModule } from './world-post-manager/world-post-manager.module'
 import { ReviewModule } from './review/review.module'
 import { RepositoryModule } from './repository/repository.module'
+import { AsetUsahaModule } from './aset-usaha/aset-usaha.module'
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { RepositoryModule } from './repository/repository.module'
     WorldPostManagerModule,
     RepositoryModule,
     ReviewModule,
+    AsetUsahaModule,
   ],
   controllers: [AppController],
   providers: [
