@@ -1,5 +1,5 @@
 import { MailerService } from '@nestjs-modules/mailer'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { google } from 'googleapis'
 import { Options } from 'nodemailer/lib/smtp-transport'
 
@@ -46,12 +46,13 @@ export class MailService {
         template,
         context: {
           name,
+          email: process.env.MAILING_EMAIL,
         },
       })
 
-      console.log(result)
+      Logger.log(result, 'Send Mail Success')
     } catch (err) {
-      console.log(err)
+      Logger.log(err, 'Send Mail Failed')
     }
   }
 }
