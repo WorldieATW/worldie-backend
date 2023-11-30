@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common'
@@ -38,7 +39,6 @@ export class AsetUsahaController {
 
     return this.responseUtil.response(
       {
-        responseCode: HttpStatus.OK,
         responseMessage: 'Successfully get Aset Usaha',
       },
       responseData
@@ -52,7 +52,6 @@ export class AsetUsahaController {
 
     return this.responseUtil.response(
       {
-        responseCode: HttpStatus.OK,
         responseMessage: 'Successfully get Aset Usaha',
       },
       responseData
@@ -65,7 +64,6 @@ export class AsetUsahaController {
     await this.asetUsahaService.delete(id)
 
     return this.responseUtil.response({
-      responseCode: HttpStatus.OK,
       responseMessage: 'Successfully deleted Aset Usaha',
     })
   }
@@ -128,6 +126,69 @@ export class AsetUsahaController {
       {
         responseCode: HttpStatus.CREATED,
         responseMessage: 'Successfully created new Accomodation',
+      },
+      responseData
+    )
+  }
+
+  @IsAgen()
+  @Patch('update/tourist-attraction/:id')
+  async updateDestinasiWisata(
+    @Body() destinasiWisata: DestinasiWisataDTO,
+    @GetCurrentUser() user: Pengguna,
+    @Param('id') id: string
+  ) {
+    const responseData = await this.asetUsahaService.updateDestinasiWisata(
+      destinasiWisata,
+      user,
+      id
+    )
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Successfully updated Tourist Attraction',
+      },
+      responseData
+    )
+  }
+
+  @IsAgen()
+  @Patch('update/transportation/:id')
+  async updateKendaraan(
+    @Body() kendaraan: KendaraanDTO,
+    @GetCurrentUser() user: Pengguna,
+    @Param('id') id: string
+  ) {
+    const responseData = await this.asetUsahaService.updateKendaraan(
+      kendaraan,
+      user,
+      id
+    )
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Successfully updated Transportation',
+      },
+      responseData
+    )
+  }
+
+  @IsAgen()
+  @Patch('update/accomodation/:id')
+  async updatePenginapan(
+    @Body() penginapan: PenginapanDTO,
+    @GetCurrentUser() user: Pengguna,
+    @Param('id') id: string
+  ) {
+    const responseData = await this.asetUsahaService.updatePenginapan(
+      penginapan,
+      user,
+      id
+    )
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Successfully updated Accomodation',
       },
       responseData
     )

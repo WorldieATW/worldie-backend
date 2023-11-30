@@ -24,11 +24,12 @@ export class AsetUsahaRepository {
             contains: email,
           },
         },
-        tipe: tipe,
-        jenisKendaraan: jenisKendaraan,
-        jenisPenginapan: jenisPenginapan,
+        tipe,
+        jenisKendaraan,
+        jenisPenginapan,
       },
       include: {
+        alamat: true, 
         daftarReview: true,
       },
     })
@@ -59,6 +60,7 @@ export class AsetUsahaRepository {
       nama,
       deskripsi,
       harga,
+      imgUrl,
       jalan,
       kota,
       provinsi,
@@ -68,15 +70,16 @@ export class AsetUsahaRepository {
   ) {
     const destinasiWisata = await this.prisma.asetUsaha.create({
       data: {
-        nama: nama,
-        deskripsi: deskripsi,
-        harga: harga,
+        nama,
+        deskripsi,
+        harga,
+        imgUrl,
         alamat: {
           create: {
-            jalan: jalan,
-            kota: kota,
-            provinsi: provinsi,
-            negara: negara,
+            jalan,
+            kota,
+            provinsi,
+            negara,
           },
         },
         tipe: 'DESTINASI_WISATA',
@@ -92,16 +95,17 @@ export class AsetUsahaRepository {
   }
 
   async createKendaraan(
-    { nama, deskripsi, harga, jenisKendaraan }: KendaraanDTO,
+    { nama, deskripsi, harga, imgUrl, jenisKendaraan }: KendaraanDTO,
     idAgen: string
   ) {
     const kendaraan = await this.prisma.asetUsaha.create({
       data: {
-        nama: nama,
-        deskripsi: deskripsi,
-        harga: harga,
+        nama,
+        deskripsi,
+        harga,
+        imgUrl,
         tipe: 'TRANSPORTASI',
-        jenisKendaraan: jenisKendaraan,
+        jenisKendaraan,
         agen: {
           connect: {
             id: idAgen,
@@ -118,6 +122,7 @@ export class AsetUsahaRepository {
       nama,
       deskripsi,
       harga,
+      imgUrl,
       jenisPenginapan,
       jalan,
       kota,
@@ -128,24 +133,122 @@ export class AsetUsahaRepository {
   ) {
     const penginapan = await this.prisma.asetUsaha.create({
       data: {
-        nama: nama,
-        deskripsi: deskripsi,
-        harga: harga,
+        nama,
+        deskripsi,
+        harga,
+        imgUrl: imgUrl,
         alamat: {
           create: {
-            jalan: jalan,
-            kota: kota,
-            provinsi: provinsi,
-            negara: negara,
+            jalan,
+            kota,
+            provinsi,
+            negara,
           },
         },
         tipe: 'PENGINAPAN',
-        jenisPenginapan: jenisPenginapan,
+        jenisPenginapan,
         agen: {
           connect: {
             id: idAgen,
           },
         },
+      },
+    })
+
+    return penginapan
+  }
+
+  async updateDestinasiWisata(
+    {
+      nama,
+      deskripsi,
+      harga,
+      imgUrl,
+      jalan,
+      kota,
+      provinsi,
+      negara,
+    }: DestinasiWisataDTO,
+    id: string
+  ) {
+    const destinasiWisata = await this.prisma.asetUsaha.update({
+      where: {
+        id
+      },
+      data: {
+        nama,
+        deskripsi,
+        harga,
+        imgUrl,
+        alamat: {
+          create: {
+            jalan,
+            kota,
+            provinsi,
+            negara,
+          },
+        },
+        tipe: 'DESTINASI_WISATA',
+      },
+    })
+
+    return destinasiWisata
+  }
+
+  async updateKendaraan(
+    { nama, deskripsi, harga, imgUrl, jenisKendaraan }: KendaraanDTO,
+    id: string
+  ) {
+    const kendaraan = await this.prisma.asetUsaha.update({
+      where: {
+        id
+      },
+      data: {
+        nama,
+        deskripsi,
+        harga,
+        imgUrl,
+        tipe: 'TRANSPORTASI',
+        jenisKendaraan,
+      },
+    })
+
+    return kendaraan
+  }
+
+  async updatePenginapan(
+    {
+      nama,
+      deskripsi,
+      harga,
+      imgUrl,
+      jenisPenginapan,
+      jalan,
+      kota,
+      provinsi,
+      negara,
+    }: PenginapanDTO,
+    id: string
+  ) {
+    const penginapan = await this.prisma.asetUsaha.update({
+      where: {
+        id
+      },
+      data: {
+        nama,
+        deskripsi,
+        harga,
+        imgUrl: imgUrl,
+        alamat: {
+          create: {
+            jalan,
+            kota,
+            provinsi,
+            negara,
+          },
+        },
+        tipe: 'PENGINAPAN',
+        jenisPenginapan,
       },
     })
 
