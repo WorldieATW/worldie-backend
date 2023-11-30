@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -41,8 +42,8 @@ export class PendaftaranAgenService {
     const { email, nama, password } = pendaftaranAgen
     const user = await this.repository.pengguna.findByEmail(email)
 
-    if (!!user) {
-      throw new ForbiddenException('User with the given email already exists')
+    if (user) {
+      throw new ConflictException('User with the given email already exists')
     }
 
     if (pendaftaranAgen.statusPendaftaran !== 'DIAJUKAN') {
