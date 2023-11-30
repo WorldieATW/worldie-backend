@@ -3,6 +3,7 @@ import { PenggunaRepository } from './pengguna.repository'
 import { PrismaModule } from 'src/prisma/prisma.module'
 import { PendaftaranAgenRepository } from './pendaftaran-agen.repository'
 import { RepositoryService } from './repository.service'
+import { AsetUsahaRepository } from './asetUsaha.repository'
 import { WorldPostRepository } from './world-post.repository'
 
 @Global()
@@ -12,6 +13,7 @@ import { WorldPostRepository } from './world-post.repository'
     RepositoryService,
     PenggunaRepository,
     PendaftaranAgenRepository,
+    AsetUsahaRepository,
     WorldPostRepository,
   ],
   exports: [RepositoryService],

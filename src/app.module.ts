@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { TravelerModule } from './traveler/traveler.module'
 import { WorldPostManagerModule } from './world-post-manager/world-post-manager.module'
 import { RepositoryModule } from './repository/repository.module'
+import { AsetUsahaModule } from './aset-usaha/aset-usaha.module'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RepositoryModule } from './repository/repository.module'
     TravelerModule,
     WorldPostManagerModule,
     RepositoryModule,
+    AsetUsahaModule,
   ],
   controllers: [AppController],
   providers: [
