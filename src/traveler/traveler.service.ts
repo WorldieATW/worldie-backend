@@ -57,8 +57,10 @@ export class TravelerService {
       throw new BadRequestException('Parent Post not found')
     }
 
-    if (konten.trim().length === 0 && attachmentUrl.trim().length === 0) {
-      throw new BadRequestException('Content must not be empty')
+    if (!konten && !attachmentUrl) {
+      throw new BadRequestException(
+        'Content and Attachment Url cannot be empty'
+      )
     }
 
     const { id } = user
