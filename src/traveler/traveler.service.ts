@@ -55,7 +55,7 @@ export class TravelerService {
   ) {
     const parentPost = await this.repository.worldPost.findById(postId)
     if (!parentPost) {
-      throw new BadRequestException('Parent Post not found')
+      throw new NotFoundException('Parent Post not found')
     }
 
     if (!konten && !attachmentUrl) {
@@ -78,7 +78,7 @@ export class TravelerService {
   async hapusKomentar(user: Pengguna, idKomentar: string) {
     const comment = await this.repository.worldPost.findById(idKomentar)
     if (!comment) {
-      throw new BadRequestException('Comment not found')
+      throw new NotFoundException('Comment not found')
     }
 
     const { parentPostId } = comment
@@ -91,7 +91,7 @@ export class TravelerService {
     const { travelerId } = comment
     const { id } = user
     if (travelerId !== id) {
-      throw new UnauthorizedException('Unauthorized')
+      throw new ForbiddenException('Comment is not owned by this traveler')
     }
 
     await this.repository.worldPost.deleteById(idKomentar)
