@@ -29,7 +29,7 @@ export class AsetUsahaRepository {
         jenisPenginapan,
       },
       include: {
-        alamat: true, 
+        alamat: true,
         daftarReview: true,
       },
     })
@@ -173,7 +173,7 @@ export class AsetUsahaRepository {
   ) {
     const destinasiWisata = await this.prisma.asetUsaha.update({
       where: {
-        id
+        id,
       },
       data: {
         nama,
@@ -201,7 +201,7 @@ export class AsetUsahaRepository {
   ) {
     const kendaraan = await this.prisma.asetUsaha.update({
       where: {
-        id
+        id,
       },
       data: {
         nama,
@@ -232,7 +232,7 @@ export class AsetUsahaRepository {
   ) {
     const penginapan = await this.prisma.asetUsaha.update({
       where: {
-        id
+        id,
       },
       data: {
         nama,

@@ -90,7 +90,11 @@ export class AsetUsahaService {
     return penginapan
   }
 
-  async updateDestinasiWisata(body: DestinasiWisataDTO, user: Pengguna, id: string) {
+  async updateDestinasiWisata(
+    body: DestinasiWisataDTO,
+    user: Pengguna,
+    id: string
+  ) {
     if (user.role !== 'AGEN') {
       throw new ForbiddenException('You dont have permission')
     }
@@ -120,10 +124,7 @@ export class AsetUsahaService {
       throw new ForbiddenException('You dont have permission')
     }
 
-    const kendaraan = await this.repository.asetUsaha.updateKendaraan(
-      body,
-      id
-    )
+    const kendaraan = await this.repository.asetUsaha.updateKendaraan(body, id)
 
     return kendaraan
   }
