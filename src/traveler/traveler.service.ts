@@ -2,7 +2,7 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
-  ForbiddenException
+  ForbiddenException,
 } from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
 import { CreateWorldPostDTO } from './traveler.DTO'
