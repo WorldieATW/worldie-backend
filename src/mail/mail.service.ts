@@ -10,13 +10,13 @@ export class MailService {
   private async setTransport() {
     const OAuth2 = google.auth.OAuth2
     const oauth2Client = new OAuth2(
-      process.env.CLIENT_ID,
-      process.env.CLIENT_SECRET,
+      process.env.MAILING_CLIENT_ID,
+      process.env.MAILING_CLIENT_SECRET,
       'https://developers.google.com/oauthplayground'
     )
 
     oauth2Client.setCredentials({
-      refresh_token: process.env.REFRESH_TOKEN,
+      refresh_token: process.env.MAILING_REFRESH_TOKEN,
     })
 
     const accessTokenResponse = await oauth2Client.getAccessToken()
@@ -26,9 +26,9 @@ export class MailService {
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: process.env.EMAIL,
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
+        user: process.env.MAILING_EMAIL,
+        clientId: process.env.MAILING_CLIENT_ID,
+        clientSecret: process.env.MAILING_CLIENT_SECRET,
         accessToken,
       },
     }
@@ -41,7 +41,7 @@ export class MailService {
       const result = await this.mailerService.sendMail({
         transporterName: 'gmail',
         to,
-        from: process.env.EMAIL,
+        from: process.env.MAILING_EMAIL,
         subject: 'Pendaftaran Agen Worldie',
         template,
         context: {
