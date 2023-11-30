@@ -17,15 +17,33 @@ export class ReviewService {
     body: CreateReviewDTO,
     idDestinasiWisata: string
   ) {
-    const { judul, konten, rating, attachmentUrl } = body
+    const { judul, konten, rating } = body
 
     // find destinasi wisata, if not found return error msg
+    const destinasiWisata = await this.repository.asetUsaha.findById(
+      idDestinasiWisata
+    )
+    if (!destinasiWisata) {
+      throw new NotFoundException('Destinasi wisata tidak ditemukan')
+    }
 
     // check available field, return error msg if theres empty field
-    if (!judul && !attachmentUrl && !konten && !rating) {
+    if (!judul && !konten && !rating) {
       throw new BadRequestException('Field cannot be empty')
     }
 
     // get user
+    const { id } = user
+    const review = await this.repository.review.create(
+        {
+        judul,
+        konten,
+        rating,
+        travelerId: id,
+        destinasiWisataId: idDestinasiWisata,
+        },
+    )
+
+    return { review: review }
   }
 }

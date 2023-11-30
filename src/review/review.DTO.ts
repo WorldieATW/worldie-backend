@@ -9,7 +9,4 @@ export class CreateReviewDTO {
 
   @IsNumber()
   rating: number
-
-  @IsString()
-  attachmentUrl: string
 }

@@ -29,6 +29,18 @@ export class ReviewController {
     @Body() body: CreateReviewDTO,
     @Param('idDestinasiWisata') idDestinasiWisata: string
   ) {
-    await this.reviewService.createReview(user, body, idDestinasiWisata)
+    const response = await this.reviewService.createReview(
+      user,
+      body,
+      idDestinasiWisata
+    )
+
+    return this.responseUtil.response(
+      {
+        responseCode: HttpStatus.CREATED,
+        responseMessage: 'Review successfully created',
+      },
+      response
+    )
   }
 }

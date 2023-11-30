@@ -5,6 +5,7 @@ import { PendaftaranAgenRepository } from './pendaftaran-agen.repository'
 import { RepositoryService } from './repository.service'
 import { AsetUsahaRepository } from './asetUsaha.repository'
 import { WorldPostRepository } from './world-post.repository'
+import { ReviewRepository } from './review.repository'
 
 @Global()
 @Module({
@@ -15,6 +16,7 @@ import { WorldPostRepository } from './world-post.repository'
     PendaftaranAgenRepository,
     AsetUsahaRepository,
     WorldPostRepository,
+    ReviewRepository,
   ],
   exports: [RepositoryService],
 })
