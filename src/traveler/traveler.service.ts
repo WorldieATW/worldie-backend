@@ -15,6 +15,10 @@ export class TravelerService {
     user: Pengguna,
     { konten, attachmentUrl, parentPostId }: CreateWorldPostDTO
   ) {
+    if (!konten && !attachmentUrl) {
+      throw new BadRequestException('Content and Attachment Url cannot not be empty')
+    }
+
     const { id } = user
     const worldPost = await this.repository.worldPost.create({
       konten: konten,
