@@ -15,7 +15,7 @@ export class WorldPostRepository {
     const worldPost = await this.prisma.worldPost.create({
       data: {
         konten: konten,
-        attachmentUrl: attachmentUrl,
+        // attachmentUrl: attachmentUrl,
         travelerId: travelerId,
         ...(parentPostId ? { parentPostId: parentPostId } : {}),
       },

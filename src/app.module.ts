@@ -10,6 +10,7 @@ import { AuthGuard } from './auth/auth.guard'
 import { JwtModule } from '@nestjs/jwt'
 import { TravelerModule } from './traveler/traveler.module'
 import { WorldPostManagerModule } from './world-post-manager/world-post-manager.module'
+import { ReviewModule } from './review/review.module'
 import { RepositoryModule } from './repository/repository.module'
 
 @Module({
@@ -22,6 +23,7 @@ import { RepositoryModule } from './repository/repository.module'
     TravelerModule,
     WorldPostManagerModule,
     RepositoryModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [
