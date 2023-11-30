@@ -31,7 +31,6 @@ export class PendaftaranAgenController {
 
     return this.responseUtil.response(
       {
-        responseCode: HttpStatus.OK,
         responseMessage: 'Successfully get all PendaftaranAgen',
       },
       responseData
@@ -49,7 +48,6 @@ export class PendaftaranAgenController {
 
     return this.responseUtil.response(
       {
-        responseCode: HttpStatus.OK,
         responseMessage: 'Successfully get PendaftaranAgen',
       },
       responseData
@@ -62,7 +60,6 @@ export class PendaftaranAgenController {
     await this.pendaftaranAgenService.acceptPendaftaranAgen(id)
 
     return this.responseUtil.response({
-      responseCode: HttpStatus.OK,
       responseMessage: 'Successfully accept PendaftaranAgen',
     })
   }
@@ -73,7 +70,6 @@ export class PendaftaranAgenController {
     await this.pendaftaranAgenService.rejectPendaftaranAgen(id)
 
     return this.responseUtil.response({
-      responseCode: HttpStatus.OK,
       responseMessage: 'Successfully reject PendaftaranAgen',
     })
   }
