@@ -29,16 +29,6 @@ export class ReviewRepository {
     return review
   }
 
-  //   async findAllWorldPost() {
-  //     const worldPosts = await this.prisma.worldPost.findMany({
-  //       where: {
-  //         parentPostId: null,
-  //       },
-  //     })
-
-  //     return worldPosts
-  //   }
-
   async findById(id: string) {
     const review = await this.prisma.review.findUnique({
       where: {

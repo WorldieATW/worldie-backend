@@ -73,6 +73,11 @@ export class ReviewService {
     // check if the review is belong to the user
     const review = await this.repository.review.findById(idReview)
 
+    // check if review is available
+    if (!review) {
+      throw new NotFoundException('Review not found')
+    }
+
     if (review.travelerId !== user.id) {
       throw new ForbiddenException('Not allowed to edit others review')
     }
@@ -86,5 +91,22 @@ export class ReviewService {
     const newReview = await this.repository.review.editById(idReview, body)
 
     return { review: newReview }
+  }
+
+  async deleteReview(user: Pengguna, idReview: string) {
+    // check if the review is belong to the user
+    const review = await this.repository.review.findById(idReview)
+
+    // check if review is available
+    if (!review) {
+      throw new NotFoundException('Review not found')
+    }
+
+    if (review.travelerId !== user.id) {
+      throw new ForbiddenException('Not allowed to delete others review')
+    }
+
+    // delete
+    await this.repository.review.deleteById(idReview)
   }
 }
