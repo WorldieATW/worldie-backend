@@ -24,3 +24,8 @@ export interface CreateReviewInterface {
   travelerId: string
   destinasiWisataId: string
 }
+export interface EditReviewInterface {
+  judul?: string
+  konten?: string
+  rating?: number
+}

@@ -68,4 +68,23 @@ export class ReviewService {
     return { review: review }
   }
 
+  async editReview(user: Pengguna, body: CreateReviewDTO, idReview: string) {
+    const { rating } = body
+    // check if the review is belong to the user
+    const review = await this.repository.review.findById(idReview)
+
+    if (review.travelerId !== user.id) {
+      throw new ForbiddenException('Not allowed to edit others review')
+    }
+
+    // check rating field range
+    if (rating < 0 || rating > 5) {
+      throw new BadRequestException('Rating should be on the range from 0 to 5')
+    }
+
+    // update
+    const newReview = await this.repository.review.editById(idReview, body)
+
+    return { review: newReview }
+  }
 }

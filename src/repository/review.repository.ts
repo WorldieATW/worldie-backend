@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { CreateReviewInterface } from './repository.interface'
+import {
+  CreateReviewInterface,
+  EditReviewInterface,
+} from './repository.interface'
 
 @Injectable()
 export class ReviewRepository {
@@ -55,6 +58,22 @@ export class ReviewRepository {
     })
 
     return review
+  }
+
+  async editById(
+    reviewId: string,
+    { judul, konten, rating }: EditReviewInterface
+  ) {
+    await this.prisma.review.update({
+      where: {
+        id: reviewId,
+      },
+      data: {
+        judul: judul,
+        konten: konten,
+        rating: rating,
+      },
+    })
   }
 
   async deleteById(id: string) {

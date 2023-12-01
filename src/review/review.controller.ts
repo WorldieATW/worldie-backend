@@ -6,6 +6,7 @@ import {
   Post,
   Delete,
   Param,
+  Patch,
 } from '@nestjs/common'
 import { ReviewService } from './review.service'
 import { ResponseUtil } from 'src/common/utils/response.util'
@@ -39,6 +40,25 @@ export class ReviewController {
       {
         responseCode: HttpStatus.CREATED,
         responseMessage: 'Review successfully created',
+      },
+      response
+    )
+  }
+
+  @IsTraveler()
+  @Patch('/edit/:idReview')
+  @HttpCode(HttpStatus.CREATED)
+  async editReview(
+    @GetCurrentUser() user: Pengguna,
+    @Body() body: CreateReviewDTO,
+    @Param('idReview') idReview: string
+  ) {
+    const response = await this.reviewService.editReview(user, body, idReview)
+
+    return this.responseUtil.response(
+      {
+        responseCode: HttpStatus.OK,
+        responseMessage: 'Review successfully edited',
       },
       response
     )
