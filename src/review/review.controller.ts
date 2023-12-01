@@ -22,7 +22,7 @@ export class ReviewController {
   ) {}
 
   @IsTraveler()
-  @Post('review/:idDestinasiWisata')
+  @Post('/:idDestinasiWisata')
   @HttpCode(HttpStatus.CREATED)
   async createReview(
     @GetCurrentUser() user: Pengguna,

@@ -46,6 +46,17 @@ export class ReviewRepository {
     return review
   }
 
+  async findByIdDestinasiAndUserId(destinasiWisataId: string, userId: string) {
+    const review = await this.prisma.review.findMany({
+      where: {
+        destinasiWisataId: destinasiWisataId,
+        travelerId: userId,
+      },
+    })
+
+    return review
+  }
+
   async deleteById(id: string) {
     await this.prisma.review.delete({
       where: {
