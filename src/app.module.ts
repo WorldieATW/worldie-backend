@@ -15,6 +15,7 @@ import { PendaftaranAgenModule } from './pendaftaran-agen/pendaftaran-agen.modul
 import { MailModule } from './mail/mail.module'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
+import { AsetUsahaModule } from './aset-usaha/aset-usaha.module'
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         },
       },
     }),
+    AsetUsahaModule,
   ],
   controllers: [AppController],
   providers: [
