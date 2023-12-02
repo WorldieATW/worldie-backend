@@ -1,8 +1,17 @@
-import { Controller, Post, HttpCode, HttpStatus, Body } from '@nestjs/common'
+import {
+  Controller,
+  Post,
+  HttpCode,
+  HttpStatus,
+  Body,
+  Get,
+} from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { LoginDTO, RegistrationDTO } from './auth.DTO'
 import { ResponseUtil } from 'src/common/utils/response.util'
 import { IsPublic } from 'src/common/decorators/isPublic.decorator'
+import { GetCurrentUser } from 'src/common/decorators/getCurrentUser.decorator'
+import { Pengguna } from '@prisma/client'
 
 @Controller('auth')
 export class AuthController {
@@ -35,6 +44,18 @@ export class AuthController {
     return this.responseUtil.response(
       {
         responseMessage: 'Login Successful',
+      },
+      responseData
+    )
+  }
+
+  @Get('refresh')
+  async refresh(@GetCurrentUser() user: Pengguna) {
+    const responseData = await this.authService.refresh(user)
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Refresh Successful',
       },
       responseData
     )
