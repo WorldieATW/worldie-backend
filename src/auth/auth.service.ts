@@ -121,6 +121,16 @@ export class AuthService {
     }
   }
 
+  async refresh(user: Pengguna) {
+    const accessToken = await this.generateAccessToken(user.id)
+    const finalizedUser = this.getFinalizedUser(user)
+
+    return {
+      accessToken: accessToken,
+      user: finalizedUser,
+    }
+  }
+
   private async generateAccessToken(key: string) {
     const accessToken = await this.jwtService.signAsync(
       { key },
@@ -137,6 +147,7 @@ export class AuthService {
     const finalizedUser: FinalizedUserInterface = {
       email: user.email,
       nama: user.nama,
+      role: user.role,
     }
 
     return finalizedUser
