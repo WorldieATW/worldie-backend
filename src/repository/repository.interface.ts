@@ -17,3 +17,15 @@ export interface CreateWorldPostInterface {
   travelerId: string
   parentPostId?: string
 }
+export interface CreateReviewInterface {
+  judul?: string
+  konten?: string
+  rating?: number
+  travelerId: string
+  destinasiWisataId: string
+}
+export interface EditReviewInterface {
+  judul?: string
+  konten?: string
+  rating?: number
+}

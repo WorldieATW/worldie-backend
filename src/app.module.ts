@@ -10,6 +10,7 @@ import { AuthGuard } from './auth/auth.guard'
 import { JwtModule } from '@nestjs/jwt'
 import { TravelerModule } from './traveler/traveler.module'
 import { WorldPostManagerModule } from './world-post-manager/world-post-manager.module'
+import { ReviewModule } from './review/review.module'
 import { RepositoryModule } from './repository/repository.module'
 import { PendaftaranAgenModule } from './pendaftaran-agen/pendaftaran-agen.module'
 import { MailModule } from './mail/mail.module'
@@ -27,6 +28,7 @@ import { AsetUsahaModule } from './aset-usaha/aset-usaha.module'
     TravelerModule,
     WorldPostManagerModule,
     RepositoryModule,
+    ReviewModule,
     PendaftaranAgenModule,
     MailModule,
     MailerModule.forRoot({
