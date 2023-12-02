@@ -54,7 +54,7 @@ export class ReviewRepository {
     reviewId: string,
     { judul, konten, rating }: EditReviewInterface
   ) {
-    await this.prisma.review.update({
+    const review = await this.prisma.review.update({
       where: {
         id: reviewId,
       },
@@ -64,6 +64,7 @@ export class ReviewRepository {
         rating: rating,
       },
     })
+    return review
   }
 
   async deleteById(id: string) {

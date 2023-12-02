@@ -12,7 +12,7 @@ import { ReviewService } from './review.service'
 import { ResponseUtil } from 'src/common/utils/response.util'
 import { IsTraveler } from 'src/common/decorators/setRolePermission.decorator'
 import { GetCurrentUser } from 'src/common/decorators/getCurrentUser.decorator'
-import { CreateReviewDTO } from './review.DTO'
+import { CreateReviewDTO, EditReviewDTO } from './review.DTO'
 import { Pengguna } from '@prisma/client'
 
 @Controller('review')
@@ -45,7 +45,7 @@ export class ReviewController {
   @HttpCode(HttpStatus.OK)
   async editReview(
     @GetCurrentUser() user: Pengguna,
-    @Body() body: CreateReviewDTO,
+    @Body() body: EditReviewDTO,
     @Param('idReview') idReview: string
   ) {
     const response = await this.reviewService.editReview(user, body, idReview)

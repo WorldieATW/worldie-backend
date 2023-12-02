@@ -4,7 +4,7 @@ import {
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common'
-import { CreateReviewDTO } from './review.DTO'
+import { CreateReviewDTO, EditReviewDTO } from './review.DTO'
 import { RepositoryService } from 'src/repository/repository.service'
 import { Pengguna } from '@prisma/client'
 
@@ -44,10 +44,20 @@ export class ReviewService {
       )
     }
 
+    if (judul === '' || konten === '') {
+      throw new BadRequestException('Title or content cant be an empty string')
+    }
+
     // check available field, return error msg if theres empty field
     // just rating and konten
-    if (rating && !judul && konten) {
-      throw new BadRequestException('Must add title if want to add description')
+    if (
+      typeof rating !== 'undefined' &&
+      !judul &&
+      typeof konten !== 'undefined'
+    ) {
+      throw new BadRequestException(
+        'Must add title if you want to add description'
+      )
     }
 
     // check rating range
@@ -66,8 +76,8 @@ export class ReviewService {
     return { review: review }
   }
 
-  async editReview(user: Pengguna, body: CreateReviewDTO, idReview: string) {
-    const { rating } = body
+  async editReview(user: Pengguna, body: EditReviewDTO, idReview: string) {
+    const { judul, konten, rating } = body
     // check if the review is belong to the user
     const review = await this.repository.review.findById(idReview)
 
@@ -78,6 +88,10 @@ export class ReviewService {
 
     if (review.travelerId !== user.id) {
       throw new ForbiddenException('Not allowed to edit others review')
+    }
+
+    if (judul === '' || konten === '') {
+      throw new BadRequestException('Title or content cant be an empty string')
     }
 
     // check rating field range
