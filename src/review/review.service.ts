@@ -12,12 +12,8 @@ import { Pengguna } from '@prisma/client'
 export class ReviewService {
   constructor(private readonly repository: RepositoryService) {}
 
-  async createReview(
-    user: Pengguna,
-    body: CreateReviewDTO,
-    idDestinasiWisata: string
-  ) {
-    const { judul, konten, rating } = body
+  async createReview(user: Pengguna, body: CreateReviewDTO) {
+    const { id: idDestinasiWisata, judul, konten, rating } = body
 
     // find destinasi wisata, if not found return error msg
     const destinasiWisata = await this.repository.asetUsaha.findById(
@@ -26,13 +22,13 @@ export class ReviewService {
 
     // check if destinasi wisata is available
     if (!destinasiWisata) {
-      throw new NotFoundException('Destinasi wisata tidak ditemukan')
+      throw new NotFoundException('Destinasi wisata not found')
     }
 
     // check if user own the destinasi wisata
     if (destinasiWisata.agenId == user.id) {
       throw new ForbiddenException(
-        'Pemilik usaha tidak bisa memberikan ulasan pada aset usaha miliknya'
+        'Owner is not allowed to give review on their own place'
       )
     }
 
@@ -43,15 +39,17 @@ export class ReviewService {
     )
     // throw error if has reviewed before
     if (pastReview.length > 0) {
-      throw new BadRequestException(
+      throw new ForbiddenException(
         'Already given review for this place, please edit your past review'
       )
     }
 
     // check available field, return error msg if theres empty field
-    if (!judul && !konten && !rating) {
-      throw new BadRequestException('Field cannot be empty')
+    // just rating and konten
+    if (rating && !judul && konten) {
+      throw new BadRequestException('Must add title if want to add description')
     }
+
     // check rating range
     if (rating < 0 || rating > 5) {
       throw new BadRequestException('Rating should be on the range from 0 to 5')

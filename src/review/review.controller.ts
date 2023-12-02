@@ -23,18 +23,13 @@ export class ReviewController {
   ) {}
 
   @IsTraveler()
-  @Post('/:idDestinasiWisata')
+  @Post('/')
   @HttpCode(HttpStatus.CREATED)
   async createReview(
     @GetCurrentUser() user: Pengguna,
-    @Body() body: CreateReviewDTO,
-    @Param('idDestinasiWisata') idDestinasiWisata: string
+    @Body() body: CreateReviewDTO
   ) {
-    const response = await this.reviewService.createReview(
-      user,
-      body,
-      idDestinasiWisata
-    )
+    const response = await this.reviewService.createReview(user, body)
 
     return this.responseUtil.response(
       {
@@ -46,7 +41,7 @@ export class ReviewController {
   }
 
   @IsTraveler()
-  @Patch('/edit/:idReview')
+  @Patch('/:idReview')
   @HttpCode(HttpStatus.OK)
   async editReview(
     @GetCurrentUser() user: Pengguna,
@@ -57,7 +52,6 @@ export class ReviewController {
 
     return this.responseUtil.response(
       {
-        responseCode: HttpStatus.OK,
         responseMessage: 'Review successfully edited',
       },
       response
@@ -65,7 +59,7 @@ export class ReviewController {
   }
 
   @IsTraveler()
-  @Delete('/destroy/:idReview')
+  @Delete('/:idReview')
   @HttpCode(HttpStatus.OK)
   async deleteReview(
     @GetCurrentUser() user: Pengguna,
@@ -74,7 +68,6 @@ export class ReviewController {
     await this.reviewService.deleteReview(user, idReview)
 
     return this.responseUtil.response({
-      responseCode: HttpStatus.OK,
       responseMessage: 'Review successfully deleted',
     })
   }
