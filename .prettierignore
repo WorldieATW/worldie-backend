@@ -11,3 +11,4 @@ README.md
 nest-cli.json
 package.json
 package-lock.json
+**/*.hbs

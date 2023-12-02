@@ -1,4 +1,4 @@
-import { Pengguna } from '@prisma/client'
+import { Pengguna, RolePengguna } from '@prisma/client'
 import { Request } from 'express'
 
 export interface AuthenticatedRequestInterface extends Request {
@@ -8,4 +8,5 @@ export interface AuthenticatedRequestInterface extends Request {
 export interface FinalizedUserInterface {
   email: string
   nama: string
+  role: RolePengguna
 }

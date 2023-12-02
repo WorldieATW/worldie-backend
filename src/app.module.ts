@@ -12,6 +12,10 @@ import { TravelerModule } from './traveler/traveler.module'
 import { WorldPostManagerModule } from './world-post-manager/world-post-manager.module'
 import { ReviewModule } from './review/review.module'
 import { RepositoryModule } from './repository/repository.module'
+import { PendaftaranAgenModule } from './pendaftaran-agen/pendaftaran-agen.module'
+import { MailModule } from './mail/mail.module'
+import { MailerModule } from '@nestjs-modules/mailer'
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
 import { AsetUsahaModule } from './aset-usaha/aset-usaha.module'
 
 @Module({
@@ -25,6 +29,18 @@ import { AsetUsahaModule } from './aset-usaha/aset-usaha.module'
     WorldPostManagerModule,
     RepositoryModule,
     ReviewModule,
+    PendaftaranAgenModule,
+    MailModule,
+    MailerModule.forRoot({
+      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+      template: {
+        dir: process.cwd() + '/src/mail/templates/',
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
+        },
+      },
+    }),
     AsetUsahaModule,
   ],
   controllers: [AppController],

@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common'
@@ -38,7 +39,6 @@ export class AsetUsahaController {
 
     return this.responseUtil.response(
       {
-        responseCode: HttpStatus.OK,
         responseMessage: 'Successfully get Aset Usaha',
       },
       responseData
@@ -52,7 +52,6 @@ export class AsetUsahaController {
 
     return this.responseUtil.response(
       {
-        responseCode: HttpStatus.OK,
         responseMessage: 'Successfully get Aset Usaha',
       },
       responseData
@@ -60,19 +59,18 @@ export class AsetUsahaController {
   }
 
   @IsAgen()
-  @Delete('delete/:id')
+  @Delete(':id')
   async delete(@Param('id') id: string) {
     await this.asetUsahaService.delete(id)
 
     return this.responseUtil.response({
-      responseCode: HttpStatus.OK,
       responseMessage: 'Successfully deleted Aset Usaha',
     })
   }
 
   @IsAgen()
   @HttpCode(HttpStatus.CREATED)
-  @Post('create/tourist-attraction')
+  @Post('tourist-attraction')
   async createDestinasiWisata(
     @Body() destinasiWisata: DestinasiWisataDTO,
     @GetCurrentUser() user: Pengguna
@@ -93,7 +91,7 @@ export class AsetUsahaController {
 
   @IsAgen()
   @HttpCode(HttpStatus.CREATED)
-  @Post('create/transportation')
+  @Post('transportation')
   async createKendaraan(
     @Body() kendaraan: KendaraanDTO,
     @GetCurrentUser() user: Pengguna
@@ -114,7 +112,7 @@ export class AsetUsahaController {
 
   @IsAgen()
   @HttpCode(HttpStatus.CREATED)
-  @Post('create/accomodation')
+  @Post('accomodation')
   async createPenginapan(
     @Body() penginapan: PenginapanDTO,
     @GetCurrentUser() user: Pengguna
@@ -128,6 +126,69 @@ export class AsetUsahaController {
       {
         responseCode: HttpStatus.CREATED,
         responseMessage: 'Successfully created new Accomodation',
+      },
+      responseData
+    )
+  }
+
+  @IsAgen()
+  @Patch('tourist-attraction/:id')
+  async updateDestinasiWisata(
+    @Body() destinasiWisata: DestinasiWisataDTO,
+    @GetCurrentUser() user: Pengguna,
+    @Param('id') id: string
+  ) {
+    const responseData = await this.asetUsahaService.updateDestinasiWisata(
+      destinasiWisata,
+      user,
+      id
+    )
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Successfully updated Tourist Attraction',
+      },
+      responseData
+    )
+  }
+
+  @IsAgen()
+  @Patch('transportation/:id')
+  async updateKendaraan(
+    @Body() kendaraan: KendaraanDTO,
+    @GetCurrentUser() user: Pengguna,
+    @Param('id') id: string
+  ) {
+    const responseData = await this.asetUsahaService.updateKendaraan(
+      kendaraan,
+      user,
+      id
+    )
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Successfully updated Transportation',
+      },
+      responseData
+    )
+  }
+
+  @IsAgen()
+  @Patch('accomodation/:id')
+  async updatePenginapan(
+    @Body() penginapan: PenginapanDTO,
+    @GetCurrentUser() user: Pengguna,
+    @Param('id') id: string
+  ) {
+    const responseData = await this.asetUsahaService.updatePenginapan(
+      penginapan,
+      user,
+      id
+    )
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Successfully updated Accomodation',
       },
       responseData
     )
