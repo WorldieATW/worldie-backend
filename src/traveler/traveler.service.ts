@@ -50,10 +50,10 @@ export class TravelerService {
 
   async buatKomentar(
     user: Pengguna,
-    postId: string,
+    parentPostId: string,
     { konten, attachmentUrl }: CreateCommentWorldPostDTO
   ) {
-    const parentPost = await this.repository.worldPost.findById(postId)
+    const parentPost = await this.repository.worldPost.findById(parentPostId)
     if (!parentPost) {
       throw new NotFoundException('Parent Post not found')
     }
@@ -65,14 +65,14 @@ export class TravelerService {
     }
 
     const { id } = user
-    const worldPost = await this.repository.worldPost.create({
+    const commentWorldPost = await this.repository.worldPost.create({
       konten: konten,
       attachmentUrl: attachmentUrl,
       travelerId: id,
-      parentPostId: postId,
+      parentPostId: parentPostId,
     })
 
-    return { worldPost: worldPost }
+    return { commentWorldPost: commentWorldPost }
   }
 
   async hapusKomentar(user: Pengguna, idKomentar: string) {

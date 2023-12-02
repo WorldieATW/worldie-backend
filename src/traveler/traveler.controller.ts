@@ -54,7 +54,7 @@ export class TravelerController {
   }
 
   @IsTraveler()
-  @Post('world-post/:parentPostId')
+  @Post('world-post/comment/:parentPostId')
   @HttpCode(HttpStatus.CREATED)
   async buatKomentar(
     @GetCurrentUser() user: Pengguna,
@@ -77,7 +77,7 @@ export class TravelerController {
   }
 
   @IsTraveler()
-  @Delete('world-post/delete-comment/:idKomentar')
+  @Delete('world-post/comment/:idKomentar')
   @HttpCode(HttpStatus.OK)
   async hapusKomentar(
     @GetCurrentUser() user: Pengguna,
