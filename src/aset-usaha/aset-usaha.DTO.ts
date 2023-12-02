@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUrl,
 } from 'class-validator'
 
 export class GetAllAsetUsahaQueryParamDTO {
@@ -40,6 +41,10 @@ export class DestinasiWisataDTO {
   harga: number
 
   @IsNotEmpty()
+  @IsUrl()
+  imgUrl: string
+
+  @IsNotEmpty()
   @IsString()
   jalan: string
 
@@ -70,6 +75,10 @@ export class KendaraanDTO {
   harga: number
 
   @IsNotEmpty()
+  @IsUrl()
+  imgUrl: string
+
+  @IsNotEmpty()
   jenisKendaraan: JenisKendaraan
 }
 
@@ -85,6 +94,10 @@ export class PenginapanDTO {
   @IsNotEmpty()
   @IsNumber()
   harga: number
+
+  @IsNotEmpty()
+  @IsUrl()
+  imgUrl: string
 
   @IsNotEmpty()
   jenisPenginapan: JenisPenginapan
