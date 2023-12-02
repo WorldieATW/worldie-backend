@@ -57,7 +57,7 @@ export class TravelerService {
     if (!parentPost) {
       throw new NotFoundException('Parent Post not found')
     }
-    
+
     if (parentPost.parentPostId) {
       throw new BadRequestException('Comment cannot have comment')
     }
