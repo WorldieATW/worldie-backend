@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Query,
-} from '@nestjs/common'
+import { Controller, Get, Param, Patch, Query } from '@nestjs/common'
 import { PendaftaranAgenService } from './pendaftaran-agen.service'
 import { IsAdmin } from 'src/common/decorators/setRolePermission.decorator'
 import { GetPendaftaranAgenQueryParamDTO } from './pendaftaran-agen.DTO'
