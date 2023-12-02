@@ -5,7 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common'
 import { RepositoryService } from 'src/repository/repository.service'
-import { CreateWorldPostDTO, CreateCommentWorldPostDTO } from './traveler.DTO'
+import { CreateWorldPostDTO } from './traveler.DTO'
 import { Pengguna } from '@prisma/client'
 
 @Injectable()
@@ -50,16 +50,11 @@ export class TravelerService {
 
   async buatKomentar(
     user: Pengguna,
-    parentPostId: string,
-    { konten, attachmentUrl }: CreateCommentWorldPostDTO
+    { konten, attachmentUrl, parentPostId }: CreateWorldPostDTO
   ) {
     const parentPost = await this.repository.worldPost.findById(parentPostId)
     if (!parentPost) {
       throw new NotFoundException('Parent Post not found')
-    }
-
-    if (parentPost.parentPostId) {
-      throw new BadRequestException('Comment cannot have comment')
     }
 
     if (!konten && !attachmentUrl) {

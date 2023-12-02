@@ -10,7 +10,7 @@ import {
 import { TravelerService } from './traveler.service'
 import { ResponseUtil } from 'src/common/utils/response.util'
 import { IsTraveler } from 'src/common/decorators/setRolePermission.decorator'
-import { CreateWorldPostDTO, CreateCommentWorldPostDTO } from './traveler.DTO'
+import { CreateWorldPostDTO } from './traveler.DTO'
 import { GetCurrentUser } from 'src/common/decorators/getCurrentUser.decorator'
 import { Pengguna } from '@prisma/client'
 
@@ -54,18 +54,13 @@ export class TravelerController {
   }
 
   @IsTraveler()
-  @Post('world-post/comment/:parentPostId')
+  @Post('world-post/comment')
   @HttpCode(HttpStatus.CREATED)
   async buatKomentar(
     @GetCurrentUser() user: Pengguna,
-    @Param('parentPostId') parentPostId: string,
-    @Body() body: CreateCommentWorldPostDTO
+    @Body() body: CreateWorldPostDTO
   ) {
-    const responseData = await this.travelerService.buatKomentar(
-      user,
-      parentPostId,
-      body
-    )
+    const responseData = await this.travelerService.buatKomentar(user, body)
 
     return this.responseUtil.response(
       {
