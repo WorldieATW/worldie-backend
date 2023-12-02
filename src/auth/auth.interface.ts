@@ -6,7 +6,7 @@ export interface AuthenticatedRequestInterface extends Request {
 }
 
 export interface FinalizedUserInterface {
-  email: string
+  id: string
   nama: string
   role: RolePengguna
 }

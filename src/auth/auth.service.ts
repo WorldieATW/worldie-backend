@@ -90,13 +90,13 @@ export class AuthService {
         role: userRole,
       })
 
-      const accessToken = await this.generateAccessToken(user.id)
-      const finalizedUser = this.getFinalizedUser(user)
+      const accessToken = await this.generateAccessToken({
+        id: user.id,
+        nama: nama,
+        role: userRole,
+      })
 
-      return {
-        accessToken: accessToken,
-        user: finalizedUser,
-      }
+      return { accessToken: accessToken }
     }
   }
 
@@ -112,26 +112,28 @@ export class AuthService {
       throw new UnauthorizedException('Invalid Email or Password')
     }
 
-    const accessToken = await this.generateAccessToken(user.id)
-    const finalizedUser = this.getFinalizedUser(user)
+    const { id, nama, role } = user
+    const accessToken = await this.generateAccessToken({
+      id: id,
+      nama: nama,
+      role: role,
+    })
 
-    return {
-      accessToken: accessToken,
-      user: finalizedUser,
-    }
+    return { accessToken: accessToken }
   }
 
   async refresh(user: Pengguna) {
-    const accessToken = await this.generateAccessToken(user.id)
-    const finalizedUser = this.getFinalizedUser(user)
+    const { id, nama, role } = user
+    const accessToken = await this.generateAccessToken({
+      id: id,
+      nama: nama,
+      role: role,
+    })
 
-    return {
-      accessToken: accessToken,
-      user: finalizedUser,
-    }
+    return { accessToken: accessToken }
   }
 
-  private async generateAccessToken(key: string) {
+  private async generateAccessToken(key: FinalizedUserInterface) {
     const accessToken = await this.jwtService.signAsync(
       { key },
       {
@@ -141,15 +143,5 @@ export class AuthService {
     )
 
     return accessToken
-  }
-
-  private getFinalizedUser(user: Pengguna) {
-    const finalizedUser: FinalizedUserInterface = {
-      email: user.email,
-      nama: user.nama,
-      role: user.role,
-    }
-
-    return finalizedUser
   }
 }

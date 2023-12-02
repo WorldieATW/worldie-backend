@@ -20,24 +20,30 @@ export class AuthGuard implements CanActivate {
     private readonly repository: RepositoryService
   ) {}
 
-  async canActivate(ctx: ExecutionContext) {
-    const req = ctx.switchToHttp().getRequest<AuthenticatedRequestInterface>()
+  async canActivate(context: ExecutionContext) {
+    const request = context
+      .switchToHttp()
+      .getRequest<AuthenticatedRequestInterface>()
 
-    Logger.log(req.body, `Req ${req.method} ${req.url} from ${req.ips}`)
+    Logger.log(
+      request.body,
+      `Req ${request.method} ${request.url} from ${request.ips}`
+    )
 
-    if (this.getMetadataStatus(ctx, 'isPublic')) return true
+    if (this.getMetadataStatus(context, 'isPublic')) return true
 
-    const rawToken = this.extractTokenFromHeader(req)
+    const rawToken = this.extractTokenFromHeader(request)
     if (rawToken) {
       try {
-        const { key: userId } = await this.jwtService.verifyAsync(rawToken, {
+        const { key } = await this.jwtService.verifyAsync(rawToken, {
           secret: process.env.APP_ACCESS_SECRET,
         })
 
-        const user = await this.repository.pengguna.findById(userId)
+        const { id } = key
+        const user = await this.repository.pengguna.findById(id)
         if (user) {
-          req.user = user
-          return this.getPermissionStatus(ctx, user)
+          request.user = user
+          return this.getPermissionStatus(context, user)
         } else {
           throw new UnauthorizedException('Invalid Token')
         }
@@ -53,10 +59,10 @@ export class AuthGuard implements CanActivate {
     return false
   }
 
-  private getMetadataStatus(ctx: ExecutionContext, metadata: string) {
+  private getMetadataStatus(context: ExecutionContext, metadata: string) {
     return this.reflector.getAllAndOverride<boolean>(metadata, [
-      ctx.getHandler(),
-      ctx.getClass(),
+      context.getHandler(),
+      context.getClass(),
     ])
   }
 
@@ -65,11 +71,11 @@ export class AuthGuard implements CanActivate {
     return type === 'Bearer' ? token : undefined
   }
 
-  private getPermissionStatus(ctx: ExecutionContext, user: Pengguna) {
+  private getPermissionStatus(context: ExecutionContext, user: Pengguna) {
     const { role } = user
 
     for (const index in ROLE_PERMISSION) {
-      if (this.getMetadataStatus(ctx, ROLE_PERMISSION[index].metada)) {
+      if (this.getMetadataStatus(context, ROLE_PERMISSION[index].metada)) {
         if (role !== ROLE_PERMISSION[index].role) return false
       }
     }
