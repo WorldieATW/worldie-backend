@@ -53,8 +53,8 @@ model WorldPost {
 
 model Review {
   id String @default(uuid()) @id
-  judul String
-  konten String
+  judul String?
+  konten String?
   rating Int
   travelerId String
   traveler Pengguna @relation(fields: [travelerId], references: [id])
