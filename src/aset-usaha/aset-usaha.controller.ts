@@ -59,7 +59,7 @@ export class AsetUsahaController {
   }
 
   @IsAgen()
-  @Delete('delete/:id')
+  @Delete(':id')
   async delete(@Param('id') id: string) {
     await this.asetUsahaService.delete(id)
 
@@ -70,7 +70,7 @@ export class AsetUsahaController {
 
   @IsAgen()
   @HttpCode(HttpStatus.CREATED)
-  @Post('create/tourist-attraction')
+  @Post('tourist-attraction')
   async createDestinasiWisata(
     @Body() destinasiWisata: DestinasiWisataDTO,
     @GetCurrentUser() user: Pengguna
@@ -91,7 +91,7 @@ export class AsetUsahaController {
 
   @IsAgen()
   @HttpCode(HttpStatus.CREATED)
-  @Post('create/transportation')
+  @Post('transportation')
   async createKendaraan(
     @Body() kendaraan: KendaraanDTO,
     @GetCurrentUser() user: Pengguna
@@ -112,7 +112,7 @@ export class AsetUsahaController {
 
   @IsAgen()
   @HttpCode(HttpStatus.CREATED)
-  @Post('create/accomodation')
+  @Post('accomodation')
   async createPenginapan(
     @Body() penginapan: PenginapanDTO,
     @GetCurrentUser() user: Pengguna
@@ -132,7 +132,7 @@ export class AsetUsahaController {
   }
 
   @IsAgen()
-  @Patch('update/tourist-attraction/:id')
+  @Patch('tourist-attraction/:id')
   async updateDestinasiWisata(
     @Body() destinasiWisata: DestinasiWisataDTO,
     @GetCurrentUser() user: Pengguna,
@@ -153,7 +153,7 @@ export class AsetUsahaController {
   }
 
   @IsAgen()
-  @Patch('update/transportation/:id')
+  @Patch('transportation/:id')
   async updateKendaraan(
     @Body() kendaraan: KendaraanDTO,
     @GetCurrentUser() user: Pengguna,
@@ -174,7 +174,7 @@ export class AsetUsahaController {
   }
 
   @IsAgen()
-  @Patch('update/accomodation/:id')
+  @Patch('accomodation/:id')
   async updatePenginapan(
     @Body() penginapan: PenginapanDTO,
     @GetCurrentUser() user: Pengguna,

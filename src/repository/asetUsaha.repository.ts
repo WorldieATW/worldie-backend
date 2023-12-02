@@ -187,8 +187,7 @@ export class AsetUsahaRepository {
             provinsi,
             negara,
           },
-        },
-        tipe: 'DESTINASI_WISATA',
+        }
       },
     })
 
@@ -208,7 +207,6 @@ export class AsetUsahaRepository {
         deskripsi,
         harga,
         imgUrl,
-        tipe: 'TRANSPORTASI',
         jenisKendaraan,
       },
     })
@@ -247,7 +245,6 @@ export class AsetUsahaRepository {
             negara,
           },
         },
-        tipe: 'PENGINAPAN',
         jenisPenginapan,
       },
     })

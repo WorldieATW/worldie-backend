@@ -51,10 +51,6 @@ export class AsetUsahaService {
   }
 
   async createDestinasiWisata(body: DestinasiWisataDTO, user: Pengguna) {
-    if (user.role !== 'AGEN') {
-      throw new ForbiddenException('You dont have permission')
-    }
-
     const idAgen = user.id
     const destinasiWisata =
       await this.repository.asetUsaha.createDestinasiWisata(body, idAgen)
@@ -63,10 +59,6 @@ export class AsetUsahaService {
   }
 
   async createKendaraan(body: KendaraanDTO, user: Pengguna) {
-    if (user.role !== 'AGEN') {
-      throw new ForbiddenException('You dont have permission')
-    }
-
     const idAgen = user.id
     const kendaraan = await this.repository.asetUsaha.createKendaraan(
       body,
@@ -77,10 +69,6 @@ export class AsetUsahaService {
   }
 
   async createPenginapan(body: PenginapanDTO, user: Pengguna) {
-    if (user.role !== 'AGEN') {
-      throw new ForbiddenException('You dont have permission')
-    }
-
     const idAgen = user.id
     const penginapan = await this.repository.asetUsaha.createPenginapan(
       body,
@@ -95,10 +83,6 @@ export class AsetUsahaService {
     user: Pengguna,
     id: string
   ) {
-    if (user.role !== 'AGEN') {
-      throw new ForbiddenException('You dont have permission')
-    }
-
     const idAgen = user.id
     const destinasiWisataFromRepo = await this.getAsetUsahaFromRepo(id)
 
@@ -113,10 +97,6 @@ export class AsetUsahaService {
   }
 
   async updateKendaraan(body: KendaraanDTO, user: Pengguna, id: string) {
-    if (user.role !== 'AGEN') {
-      throw new ForbiddenException('You dont have permission')
-    }
-
     const idAgen = user.id
     const kendaraanFromRepo = await this.getAsetUsahaFromRepo(id)
 
@@ -130,10 +110,6 @@ export class AsetUsahaService {
   }
 
   async updatePenginapan(body: PenginapanDTO, user: Pengguna, id: string) {
-    if (user.role !== 'AGEN') {
-      throw new ForbiddenException('You dont have permission')
-    }
-
     const idAgen = user.id
     const penginapanFromRepo = await this.getAsetUsahaFromRepo(id)
 
