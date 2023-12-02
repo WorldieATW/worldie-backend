@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common'
-import { ResponseInterface } from './util.interface'
+import { ResponseInterface } from '../interfaces/response.interface'
 
 @Injectable()
 export class ResponseUtil {
