@@ -44,7 +44,7 @@ model WorldPost {
   travelerId String
   traveler Pengguna @relation(fields: [travelerId], references: [id])
   parentPostId String?
-  parentPost WorldPost? @relation("Comment", fields: [parentPostId], references: [id])
+  parentPost WorldPost? @relation("Comment", fields: [parentPostId], references: [id], onDelete: Cascade)
   childrenPost WorldPost[] @relation("Comment")
   timestamp DateTime @db.Timestamptz() @default(now())
 
