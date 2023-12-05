@@ -46,6 +46,19 @@ export class AsetUsahaController {
   }
 
   @IsPublic()
+  @Get('top')
+  async getTopDestinasiWisata() {
+    const responseData = await this.asetUsahaService.getTopDestinasiWisata()
+
+    return this,this.responseUtil.response(
+      {
+        responseMessage: 'Successfully get top Destinasi Wisata'
+      },
+      responseData
+    )
+  }
+
+  @IsPublic()
   @Get(':id')
   async getAsetUsahaById(@Param('id') id: string) {
     const responseData = await this.asetUsahaService.getAsetUsahaById(id)

@@ -125,6 +125,15 @@ export class AsetUsahaService {
     return penginapan
   }
 
+  async getTopDestinasiWisata() {
+    const topDestinasiWisata =
+      await this.repository.asetUsaha.getTopDestinasiWisata()
+
+    return {
+      topDestinasiWisata,
+    }
+  }
+
   private async getAsetUsahaFromRepo(id: string) {
     const asetUsaha = await this.repository.asetUsaha.findById(id)
 

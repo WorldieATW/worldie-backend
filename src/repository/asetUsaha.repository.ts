@@ -251,4 +251,30 @@ export class AsetUsahaRepository {
 
     return penginapan
   }
+
+  async getTopDestinasiWisata() {
+    const topDestinasiWisata = await this.prisma.asetUsaha.findMany({
+      where: {
+        tipe: TipeAsetUsaha.DESTINASI_WISATA,
+      },
+      include: {
+        _count: {
+          select: {
+            daftarReview: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          daftarReview: { _count: 'desc' },
+        },
+        {
+          nama: 'asc',
+        },
+      ],
+      take: 3,
+    })
+
+    return topDestinasiWisata
+  }
 }
