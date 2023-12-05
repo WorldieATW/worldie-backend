@@ -50,11 +50,14 @@ export class AsetUsahaController {
   async getTopDestinasiWisata() {
     const responseData = await this.asetUsahaService.getTopDestinasiWisata()
 
-    return this,this.responseUtil.response(
-      {
-        responseMessage: 'Successfully get top Destinasi Wisata'
-      },
-      responseData
+    return (
+      this,
+      this.responseUtil.response(
+        {
+          responseMessage: 'Successfully get top Destinasi Wisata',
+        },
+        responseData
+      )
     )
   }
 
