@@ -29,6 +29,16 @@ export class WorldPostRepository {
       where: {
         parentPostId: null,
       },
+      include: {
+        traveler: {
+          select: {
+            nama: true,
+          },
+        },
+      },
+      orderBy: {
+        timestamp: 'desc',
+      },
     })
 
     return worldPosts
@@ -41,6 +51,11 @@ export class WorldPostRepository {
       },
       include: {
         childrenPost: true,
+        traveler: {
+          select: {
+            nama: true,
+          },
+        },
       },
     })
 

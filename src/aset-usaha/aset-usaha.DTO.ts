@@ -1,6 +1,5 @@
 import { JenisKendaraan, JenisPenginapan, TipeAsetUsaha } from '@prisma/client'
 import {
-  IsEmail,
   IsIn,
   IsNotEmpty,
   IsNumber,
