@@ -51,6 +51,11 @@ export class WorldPostRepository {
       },
       include: {
         childrenPost: true,
+        traveler: {
+          select: {
+            nama: true,
+          },
+        },
       },
     })
 
