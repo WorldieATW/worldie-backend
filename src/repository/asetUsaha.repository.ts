@@ -12,18 +12,14 @@ export class AsetUsahaRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(
-    email: string,
+    agenId: string,
     tipe: TipeAsetUsaha,
     jenisKendaraan: JenisKendaraan,
     jenisPenginapan: JenisPenginapan
   ) {
     const allAsetUsahaAgen = await this.prisma.asetUsaha.findMany({
       where: {
-        agen: {
-          email: {
-            contains: email,
-          },
-        },
+        agenId,
         tipe,
         jenisKendaraan,
         jenisPenginapan,
