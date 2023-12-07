@@ -17,13 +17,13 @@ export class AsetUsahaService {
   constructor(private readonly repository: RepositoryService) {}
 
   async getAllAsetUsaha({
-    email,
+    agenId,
     tipe,
     jenisKendaraan,
     jenisPenginapan,
   }: GetAllAsetUsahaQueryParamDTO) {
     const allAsetUsaha = await this.repository.asetUsaha.findAll(
-      email,
+      agenId,
       tipe,
       jenisKendaraan,
       jenisPenginapan
