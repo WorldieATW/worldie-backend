@@ -10,9 +10,9 @@ import {
 } from 'class-validator'
 
 export class GetAllAsetUsahaQueryParamDTO {
-  @IsEmail()
+  @IsString()
   @IsOptional()
-  email: string
+  agenId: string
 
   @IsOptional()
   @IsIn(['DESTINASI_WISATA', 'PENGINAPAN', 'TRANSPORTASI'])

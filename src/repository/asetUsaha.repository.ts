@@ -12,18 +12,14 @@ export class AsetUsahaRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(
-    email: string,
+    agenId: string,
     tipe: TipeAsetUsaha,
     jenisKendaraan: JenisKendaraan,
     jenisPenginapan: JenisPenginapan
   ) {
     const allAsetUsahaAgen = await this.prisma.asetUsaha.findMany({
       where: {
-        agen: {
-          email: {
-            contains: email,
-          },
-        },
+        agenId,
         tipe,
         jenisKendaraan,
         jenisPenginapan,
@@ -250,5 +246,31 @@ export class AsetUsahaRepository {
     })
 
     return penginapan
+  }
+
+  async getTopDestinasiWisata() {
+    const topDestinasiWisata = await this.prisma.asetUsaha.findMany({
+      where: {
+        tipe: TipeAsetUsaha.DESTINASI_WISATA,
+      },
+      include: {
+        _count: {
+          select: {
+            daftarReview: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          daftarReview: { _count: 'desc' },
+        },
+        {
+          nama: 'asc',
+        },
+      ],
+      take: 3,
+    })
+
+    return topDestinasiWisata
   }
 }
