@@ -38,6 +38,10 @@ export class AsetUsahaRepository {
       where: {
         id: id,
       },
+      include: {
+        alamat: true,
+        daftarReview: true,
+      },
     })
 
     return asetUsaha
