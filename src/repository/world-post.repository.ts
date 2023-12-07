@@ -32,13 +32,13 @@ export class WorldPostRepository {
       include: {
         traveler: {
           select: {
-            nama: true
-          }
-        }
+            nama: true,
+          },
+        },
       },
       orderBy: {
-        timestamp: 'desc'
-      }
+        timestamp: 'desc',
+      },
     })
 
     return worldPosts
