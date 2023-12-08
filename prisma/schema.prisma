@@ -39,21 +39,22 @@ enum StatusPendaftaran {
 
 model WorldPost {
   id String @default(uuid()) @id
-  konten String
+  konten String?
+  attachmentUrl String?
   travelerId String
-  timestamp DateTime @db.Timestamptz() @default(now())
   traveler Pengguna @relation(fields: [travelerId], references: [id])
-  parentPostId String? @unique
-  parentPost WorldPost? @relation("Comment", fields: [parentPostId], references: [id])
+  parentPostId String?
+  parentPost WorldPost? @relation("Comment", fields: [parentPostId], references: [id], onDelete: Cascade)
   childrenPost WorldPost[] @relation("Comment")
+  timestamp DateTime @db.Timestamptz() @default(now())
 
   @@index([id])
 }
 
 model Review {
   id String @default(uuid()) @id
-  judul String
-  konten String
+  judul String?
+  konten String?
   rating Int
   travelerId String
   traveler Pengguna @relation(fields: [travelerId], references: [id])
@@ -80,6 +81,7 @@ model AsetUsaha {
   agenId String
   agen Pengguna @relation(fields: [agenId], references: [id])
   tipe TipeAsetUsaha
+  imgUrl String @default("")
 
   // Transportasi
   jenisKendaraan JenisKendaraan?
