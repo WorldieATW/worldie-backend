@@ -10,7 +10,7 @@ FROM base AS build
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn cache clean
-RUN yarn install --frozen-lockfile
+RUN yarn install --no-lockfile
 COPY . .
 RUN yarn prisma generate
 RUN yarn build
