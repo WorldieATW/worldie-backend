@@ -26,7 +26,7 @@ export class PendaftaranAgenService {
       status
     )
 
-    return { pendaftaranAgen }
+    return pendaftaranAgen
   }
 
   async getPendaftaranAgenById(id: string) {
