@@ -54,6 +54,6 @@ jobs:
           script: |
             docker container rm -f $CONTAINER_NAME || true
             docker image rm -f $DOCKERHUB_USERNAME/$IMAGE_NAME || true
-            docker run -d -p 80:80 --name $CONTAINER_NAME --env-file=$ENV_PATH \
+            docker run -d -p 443:443 --name $CONTAINER_NAME --env-file=$ENV_PATH \
             -v $HOST_KEY_LOCATION:$DOCKER_KEY_LOCATION -v $HOST_CERT_LOCATION:$DOCKER_CERT_LOCATION \
             $DOCKERHUB_USERNAME/$IMAGE_NAME
