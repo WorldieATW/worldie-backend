@@ -1,9 +1,7 @@
 FROM node:alpine AS base
 
 ARG APP_PORT
-# ARG DATABASE_URL
 ENV APP_PORT ${APP_PORT}
-# ENV DATABASE_URL ${DATABASE_URL}
 
 FROM base AS build
 
