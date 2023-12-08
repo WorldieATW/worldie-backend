@@ -5,12 +5,10 @@ import * as fs from 'fs'
 
 async function bootstrap() {
   const https = process.env.APP_OPEN_HTTPS
-  console.log(https)
   const httpsOptions = {
     key: fs.readFileSync(process.env.APP_KEY),
     cert: fs.readFileSync(process.env.APP_CERT),
   }
-  console.log(httpsOptions)
   const app = await NestFactory.create(AppModule, { httpsOptions })
   app.useGlobalPipes(new ValidationPipe())
   app.enableCors({
