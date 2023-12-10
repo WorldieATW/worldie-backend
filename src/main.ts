@@ -11,9 +11,7 @@ async function bootstrap() {
         cert: fs.readFileSync(process.env.APP_CERT),
       }
     : {}
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions,
-  })
+  const app = await NestFactory.create(AppModule, https ? { httpsOptions } : {})
   app.useGlobalPipes(new ValidationPipe())
   app.enableCors({
     origin: process.env.APP_ALLOWED_ORIGIN,
