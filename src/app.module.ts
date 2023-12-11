@@ -34,7 +34,10 @@ import { AsetUsahaModule } from './aset-usaha/aset-usaha.module'
     MailerModule.forRoot({
       transport: 'smtps://user@domain.com:pass@smtp.domain.com',
       template: {
-        dir: process.cwd() + '/src/mail/templates/',
+        dir:
+          process.env.NODE_ENV === 'production'
+            ? '/dist/mail/templates/'
+            : process.cwd() + '/src/mail/templates/',
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
