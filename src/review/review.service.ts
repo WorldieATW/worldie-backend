@@ -116,7 +116,6 @@ export class ReviewService {
     size: number,
     rating: number
   ) {
-    // check if the review is belong to the user
     const { reviews, totalCount } = await this.repository.review.findReviewById(
       idDestinasi,
       page,
