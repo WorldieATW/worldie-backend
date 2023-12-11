@@ -74,4 +74,31 @@ export class ReviewRepository {
       },
     })
   }
+
+  async findReviewById(
+    id: string,
+    page: number,
+    size: number,
+    rating?: number
+  ) {
+    const skip = (page - 1) * size
+    const whereClause = {
+      destinasiWisataId: id,
+      ...(rating !== undefined && { rating }),
+    }
+
+    const reviews = await this.prisma.review.findMany({
+      where: whereClause,
+      skip,
+      take: size,
+    })
+    const totalCount = await this.prisma.review.count({
+      where: whereClause,
+    })
+
+    return {
+      reviews,
+      totalCount,
+    }
+  }
 }

@@ -44,25 +44,13 @@ export class ReviewService {
       )
     }
 
-    if (judul === '' || konten === '') {
-      throw new BadRequestException('Title or content cant be an empty string')
-    }
-
-    // check available field, return error msg if theres empty field
-    // just rating and konten
-    if (
-      typeof rating !== 'undefined' &&
-      !judul &&
-      typeof konten !== 'undefined'
-    ) {
-      throw new BadRequestException(
-        'Must add title if you want to add description'
-      )
+    if (judul === '' || konten === '' || rating === 0) {
+      throw new BadRequestException('Please check your input')
     }
 
     // check rating range
     if (rating < 0 || rating > 5) {
-      throw new BadRequestException('Rating should be on the range from 0 to 5')
+      throw new BadRequestException('Rating should be on the range from 1 to 5')
     }
 
     const review = await this.repository.review.create({
@@ -120,5 +108,27 @@ export class ReviewService {
 
     // delete
     await this.repository.review.deleteById(idReview)
+  }
+
+  async getReview(
+    idDestinasi: string,
+    page: number,
+    size: number,
+    rating: number
+  ) {
+    // check if the review is belong to the user
+    const { reviews, totalCount } = await this.repository.review.findReviewById(
+      idDestinasi,
+      page,
+      size,
+      rating
+    )
+
+    // check if review is available
+    if (!reviews) {
+      throw new NotFoundException('Review not found')
+    }
+
+    return { totalCount: totalCount, reviews: reviews }
   }
 }

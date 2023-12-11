@@ -7,6 +7,8 @@ import {
   Delete,
   Param,
   Patch,
+  Get,
+  Query,
 } from '@nestjs/common'
 import { ReviewService } from './review.service'
 import { ResponseUtil } from 'src/common/utils/response.util'
@@ -70,5 +72,33 @@ export class ReviewController {
     return this.responseUtil.response({
       responseMessage: 'Review successfully deleted',
     })
+  }
+
+  @IsTraveler()
+  @Get('/:idDestinasi')
+  @HttpCode(HttpStatus.OK)
+  async getDestinasiReviewById(
+    @Param('idDestinasi') idReview: string,
+    @Query('page') page: string,
+    @Query('size') size: string,
+    @Query('rating') rating: string
+  ) {
+    const pageNumber = parseInt(page, 10) || 1
+    const pageSize = parseInt(size, 10) || 10
+    const ratingFilter = rating ? parseInt(rating, 10) : undefined
+
+    const reviews = await this.reviewService.getReview(
+      idReview,
+      pageNumber,
+      pageSize,
+      ratingFilter
+    )
+
+    return this.responseUtil.response(
+      {
+        responseMessage: 'Review successfully fetched',
+      },
+      reviews
+    )
   }
 }
