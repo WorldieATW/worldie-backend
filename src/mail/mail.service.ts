@@ -19,8 +19,11 @@ export class MailService {
       refresh_token: process.env.MAILING_REFRESH_TOKEN,
     })
 
+    console.log('START HERE')
     const accessTokenResponse = await oauth2Client.getAccessToken()
     const accessToken = accessTokenResponse.token
+    console.log('SUCCESS HERE')
+    console.log(accessTokenResponse)
 
     const config: Options = {
       service: 'gmail',
@@ -36,8 +39,8 @@ export class MailService {
   }
 
   public async sendMail(to: string, name: string, template: string) {
-    await this.setTransport()
     try {
+      await this.setTransport()
       const result = await this.mailerService.sendMail({
         transporterName: 'gmail',
         to,
