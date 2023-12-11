@@ -91,6 +91,13 @@ export class ReviewRepository {
       where: whereClause,
       skip,
       take: size,
+      include: {
+        traveler: {
+          select: {
+            nama: true,
+          },
+        },
+      },
     })
     const totalCount = await this.prisma.review.count({
       where: whereClause,
